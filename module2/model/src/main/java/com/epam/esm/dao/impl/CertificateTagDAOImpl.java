@@ -11,22 +11,21 @@ import java.util.List;
 @Component
 public class CertificateTagDAOImpl implements CertificateTagDAO {
     private final JdbcTemplate jdbcTemplate;
-    private final String GET_ALL_SQL = "SELECT * FROM certificate_tag";
+    private static final String GET_ALL_SQL = "SELECT * FROM certificate_tag";
     private static final String SAVE_SQL = "INSERT INTO certificate_tag (certificate_id,tag_id) VALUES (?,?)";
-
 
     @Autowired
     public CertificateTagDAOImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public static String getSaveSql() {
-        return SAVE_SQL;
-    }
 
     @Override
     public List<CertificateTag> getAll(){
         return jdbcTemplate.query(GET_ALL_SQL, new BeanPropertyRowMapper<>(CertificateTag.class));
     }
-
+    @Override
+    public void saveTags(Long certificateId, Long tagId) {
+        jdbcTemplate.update(SAVE_SQL, certificateId, tagId);
+    }
 }

@@ -51,7 +51,7 @@ public class CertificateController {
     }
 
     @PostMapping()
-    public ResponseEntity<Certificate> saveCertificate(@RequestBody Certificate certificate){
+    public ResponseEntity<Certificate> saveCertificate(@RequestBody Certificate certificate) {
         certificateService.save(certificate);
         return new ResponseEntity<>(certificate,HttpStatus.CREATED);
     }
@@ -64,7 +64,7 @@ public class CertificateController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Certificate> updateCertificate(@RequestBody Certificate certificate,
-                                               @PathVariable int id){
+                                                         @PathVariable int id) {
         certificateService.update(certificate,id);
         return new ResponseEntity<>(certificate,HttpStatus.OK);
     }

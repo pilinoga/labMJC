@@ -60,7 +60,7 @@ public class AppExceptionHandler {
         ErrorData data = new ErrorData();
         String message = translator.toLocale(CertificateTransactionException.getErrorMessage());
         data.setErrorMessage(message);
-        data.setErrorCode(SortException.getCode());
+        data.setErrorCode(CertificateTransactionException.getCode());
         return new ResponseEntity<>(data, HttpStatus.BAD_GATEWAY);
     }
 

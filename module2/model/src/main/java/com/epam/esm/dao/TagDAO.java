@@ -8,5 +8,6 @@ public interface TagDAO {
     Tag getByID(int id);
     Long save(Tag tag);
     void delete(int id);
+    Tag getTag(Tag tagFromUser);
 
 }

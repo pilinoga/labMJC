@@ -3,6 +3,7 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.config.ConfigTestDB;
 import com.epam.esm.dao.CertificateDAO;
+import com.epam.esm.exception.certificate.CertificateTransactionException;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class CertificateDAOImplTest {
     CertificateDAO certificateDAOImpl;
 
     @Test
-    public void shouldSaveCertificate() {
+    public void shouldSaveCertificate() throws CertificateTransactionException {
         String time = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
         long testId = 5L;
         Certificate expected = new Certificate("TestName", "TestDesc", 12.5, 12, time, time);
@@ -95,7 +96,7 @@ class CertificateDAOImplTest {
     }
 
     @Test
-    public void shouldUpdateCertificatePositive(){
+    public void shouldUpdateCertificatePositive() throws CertificateTransactionException {
         int id = 4;
         String time = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
         Certificate expected = new Certificate("newName", "newDescr", 10.0, 5, time, time);

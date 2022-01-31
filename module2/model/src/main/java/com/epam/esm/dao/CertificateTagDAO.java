@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface CertificateTagDAO {
     List<CertificateTag> getAll();
+    void saveTags(Long certificateId, Long tagId);
 }

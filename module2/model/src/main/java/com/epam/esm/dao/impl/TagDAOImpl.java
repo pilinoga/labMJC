@@ -18,20 +18,16 @@ import java.util.List;
 @Component
 public class TagDAOImpl implements TagDAO {
     private final JdbcTemplate jdbcTemplate;
-    private final String FIND_BY_ID_SQL = "SELECT * FROM tag WHERE id=?";
-    private final String GET_ALL_SQL= "SELECT * FROM tag";
-    private final String SAVE_SQL = "INSERT INTO tag (name) VALUES (?) ";
-    private final String DELETE_SQL = "DELETE FROM tag WHERE id=?";
+    private static final String FIND_BY_ID_SQL = "SELECT * FROM tag WHERE id=?";
+    private static final String GET_ALL_SQL= "SELECT * FROM tag";
+    private static final String SAVE_SQL = "INSERT INTO tag (name) VALUES (?) ";
+    private static final String DELETE_SQL = "DELETE FROM tag WHERE id=?";
     private static final String FIND_BY_NAME_SQL = "SELECT * FROM tag WHERE name =?";
-    private final String ID_COLUMN= "id";
+    private static final String ID_COLUMN= "id";
 
     @Autowired
     public TagDAOImpl(JdbcTemplate jdbcTemplate ) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    public static String getFindByNameSql() {
-        return FIND_BY_NAME_SQL;
     }
 
     @Override
@@ -72,5 +68,10 @@ public class TagDAOImpl implements TagDAO {
             jdbcTemplate.update(DELETE_SQL,id);
     }
 
+    @Override
+    public Tag getTag(Tag tagFromUser) {
+        return jdbcTemplate.queryForObject(FIND_BY_NAME_SQL,
+                new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
+    }
 
 }

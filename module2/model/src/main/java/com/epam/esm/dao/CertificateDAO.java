@@ -6,11 +6,11 @@ import java.util.Map;
 
 public interface CertificateDAO {
     List<Certificate> getAll();
-    void save(Certificate certificate);
+    long save(Certificate certificate);
     Certificate getByID(int id);
     void delete(int id);
     void update(Certificate certificate, int id);
     void patchUpdate(int id, Map<String, Object> fields);
-    List<Certificate>  findByNameOrDescription(String param);
+    List<Certificate> findByNameOrDescription(String param);
 
 }
