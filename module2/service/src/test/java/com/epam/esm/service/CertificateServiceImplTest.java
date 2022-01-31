@@ -1,10 +1,10 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dao.api.CertificateDAO;
+import com.epam.esm.dao.CertificateDAO;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
-import com.epam.esm.service.api.CertificateService;
+import com.epam.esm.service.impl.CertificateServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

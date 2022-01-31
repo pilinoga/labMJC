@@ -1,6 +1,6 @@
-package com.epam.esm.dao;
+package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.api.TagDAO;
+import com.epam.esm.dao.TagDAO;
 import com.epam.esm.exception.tag.NoSuchTagException;
 import com.epam.esm.exception.tag.TagAlreadyExistException;
 import com.epam.esm.model.Tag;

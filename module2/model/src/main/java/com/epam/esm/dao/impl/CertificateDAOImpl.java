@@ -1,8 +1,8 @@
-package com.epam.esm.dao;
+package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.api.CertificateDAO;
-import com.epam.esm.dao.api.CertificateTagDAO;
-import com.epam.esm.dao.api.TagDAO;
+import com.epam.esm.dao.CertificateDAO;
+import com.epam.esm.dao.CertificateTagDAO;
+import com.epam.esm.dao.TagDAO;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.CertificateTag;

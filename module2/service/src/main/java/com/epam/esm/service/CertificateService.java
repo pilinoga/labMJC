@@ -1,16 +1,15 @@
-package com.epam.esm.dao.api;
+package com.epam.esm.service;
 
 import com.epam.esm.model.Certificate;
 import java.util.List;
 import java.util.Map;
 
-public interface CertificateDAO {
+public interface CertificateService {
     List<Certificate> getAll();
-    void save(Certificate certificate);
     Certificate getByID(int id);
+    void save(Certificate certificate);
     void delete(int id);
     void update(Certificate certificate, int id);
     void patchUpdate(int id, Map<String, Object> fields);
-    List<Certificate>  findByNameOrDescription(String param);
-
+    List<Certificate> search(String tag, String name, String sort);
 }

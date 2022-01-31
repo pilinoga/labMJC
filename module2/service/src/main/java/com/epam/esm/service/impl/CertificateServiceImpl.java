@@ -1,9 +1,9 @@
-package com.epam.esm.service;
+package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.api.CertificateDAO;
+import com.epam.esm.dao.CertificateDAO;
 import com.epam.esm.exception.SortException;
 import com.epam.esm.model.Certificate;
-import com.epam.esm.service.api.CertificateService;
+import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;

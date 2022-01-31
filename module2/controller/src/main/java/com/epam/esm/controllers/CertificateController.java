@@ -2,7 +2,7 @@ package com.epam.esm.controllers;
 
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
-import com.epam.esm.service.api.CertificateService;
+import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,7 @@ public class CertificateController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> saveCertificate(@RequestBody Certificate certificate){
+    public ResponseEntity<Certificate> saveCertificate(@RequestBody Certificate certificate){
         certificateService.save(certificate);
         return new ResponseEntity<>(certificate,HttpStatus.CREATED);
     }
@@ -63,14 +63,14 @@ public class CertificateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCertificate(@RequestBody Certificate certificate,
+    public ResponseEntity<Certificate> updateCertificate(@RequestBody Certificate certificate,
                                                @PathVariable int id){
         certificateService.update(certificate,id);
         return new ResponseEntity<>(certificate,HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> patchUpdateCertificate(@RequestBody Map<String, Object> updates,
+    public ResponseEntity<Map<String, Object>> patchUpdateCertificate(@RequestBody Map<String, Object> updates,
                                                     @PathVariable int id){
         certificateService.patchUpdate(id,updates);
         return new ResponseEntity<>(updates,HttpStatus.OK);

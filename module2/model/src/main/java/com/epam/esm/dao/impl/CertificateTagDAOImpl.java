@@ -1,6 +1,6 @@
-package com.epam.esm.dao;
+package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.api.CertificateTagDAO;
+import com.epam.esm.dao.CertificateTagDAO;
 import com.epam.esm.model.CertificateTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

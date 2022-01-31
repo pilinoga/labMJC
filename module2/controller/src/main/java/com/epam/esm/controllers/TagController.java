@@ -1,7 +1,7 @@
 package com.epam.esm.controllers;
 
 import com.epam.esm.model.Tag;
-import com.epam.esm.service.api.TagService;
+import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +36,7 @@ public class TagController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> saveTag(@RequestBody Tag tag){
+    public ResponseEntity<Tag> saveTag(@RequestBody Tag tag){
         tagService.save(tag);
         return new ResponseEntity<>(tag, HttpStatus.CREATED);
 
