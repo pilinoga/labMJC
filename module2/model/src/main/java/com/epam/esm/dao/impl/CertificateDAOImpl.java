@@ -3,6 +3,7 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.CertificateDAO;
 import com.epam.esm.dao.CertificateTagDAO;
 import com.epam.esm.dao.TagDAO;
+import com.epam.esm.exception.certificate.CertificateTransactionException;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.CertificateTag;
@@ -14,6 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.PreparedStatement;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -58,36 +61,46 @@ public class CertificateDAOImpl implements CertificateDAO {
     }
 
     @Override
+    @Transactional
     public void save(Certificate certificate) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(SAVE_SQL, new String[]{ID_COLUMN});
-            ps.setString(1, certificate.getName());
-            ps.setString(2, certificate.getDescription());
-            ps.setDouble(3, certificate.getPrice());
-            ps.setInt(4, certificate.getDuration());
-            ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE));
-            ps.setString(6, ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE));
-            return ps;
-        }, keyHolder);
-        Long certificateId = keyHolder.getKey().longValue();
-        this.saveTagsFromCertificate(certificate, certificateId);
+        try {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(SAVE_SQL, new String[]{ID_COLUMN});
+                ps.setString(1, certificate.getName());
+                ps.setString(2, certificate.getDescription());
+                ps.setDouble(3, certificate.getPrice());
+                ps.setInt(4, certificate.getDuration());
+                ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE));
+                ps.setString(6, ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE));
+                return ps;
+            }, keyHolder);
+            Long certificateId = keyHolder.getKey().longValue();
+            this.saveTagsFromCertificate(certificate, certificateId);
+        }catch(DataAccessException e){
+            throw new CertificateTransactionException();
+        }
     }
 
     @Override
+    @Transactional
     public void update(Certificate certificate, int id) {
         this.findById(id);
-        jdbcTemplate.update(UPDATE_SQL,
-                certificate.getName(),
-                certificate.getDescription(),
-                certificate.getPrice(),
-                certificate.getDuration(),
-                ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE),
-                id);
-        Set<Tag> tags = certificate.getTags();
-        List<Tag> all = tagDAO.getAll();
-        this.saveNewTagsFromCertificateInUpdate(id, tags, all);
-        this.addTagsToCertificateInUpdate(id, tags, all);
+        try {
+            jdbcTemplate.update(UPDATE_SQL,
+                    certificate.getName(),
+                    certificate.getDescription(),
+                    certificate.getPrice(),
+                    certificate.getDuration(),
+                    ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE),
+                    id);
+            Set<Tag> tags = certificate.getTags();
+            List<Tag> all = tagDAO.getAll();
+            this.saveNewTagsFromCertificateInUpdate(id, tags, all);
+            this.addTagsToCertificateInUpdate(id, tags, all);
+        }catch (DataAccessException e){
+            throw new CertificateTransactionException();
+        }
     }
 
     @Override
@@ -154,36 +167,47 @@ public class CertificateDAOImpl implements CertificateDAO {
         return certificates;
     }
 
-
+    @Transactional
     private void saveTagsFromCertificate(Certificate certificate, Long certificateId) {
-        Set<Tag> tags = certificate.getTags();
-        List<Tag> all = tagDAO.getAll();
-        tags.forEach(tagFromUser -> {
-            if (all.stream().anyMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
-                Tag tagFromDB = jdbcTemplate.queryForObject(TagDAOImpl.getFindByNameSql(),
-                        new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
-                jdbcTemplate.update(CertificateTagDAOImpl.getSaveSql(),
-                        certificateId, tagFromDB.getId());
-            }else{
-                Long tagId = tagDAO.save(tagFromUser);
-                jdbcTemplate.update(CertificateTagDAOImpl.getSaveSql(),
-                        certificateId, tagId);
-            }
-        });
+        try {
+            Set<Tag> tags = certificate.getTags();
+            List<Tag> all = tagDAO.getAll();
+            tags.forEach(tagFromUser -> {
+                if (all.stream().anyMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
+                    Tag tagFromDB = jdbcTemplate.queryForObject(TagDAOImpl.getFindByNameSql(),
+                            new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
+                    jdbcTemplate.update(CertificateTagDAOImpl.getSaveSql(),
+                            certificateId, tagFromDB.getId());
+                } else {
+                    Long tagId = tagDAO.save(tagFromUser);
+                    jdbcTemplate.update(CertificateTagDAOImpl.getSaveSql(),
+                            certificateId, tagId);
+                }
+            });
+        }catch (DataAccessException e){
+            throw new CertificateTransactionException();
+        }
     }
 
+    @Transactional
     private void addTagsToCertificateInUpdate(int id, Set<Tag> certificateTags, List<Tag> dbTags) {
-        certificateTags.forEach(tagFromUser -> {
-            if (dbTags.stream().anyMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
-                Tag tagFromDB = jdbcTemplate.queryForObject(TagDAOImpl.getFindByNameSql(),
-                        new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
-                jdbcTemplate.update(CertificateTagDAOImpl.getSaveSql(),
-                        id, tagFromDB.getId());
-            }
-        });
+        try {
+            certificateTags.forEach(tagFromUser -> {
+                if (dbTags.stream().anyMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
+                    Tag tagFromDB = jdbcTemplate.queryForObject(TagDAOImpl.getFindByNameSql(),
+                            new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
+                    jdbcTemplate.update(CertificateTagDAOImpl.getSaveSql(),
+                            id, tagFromDB.getId());
+                }
+            });
+        }catch(DataAccessException e) {
+            throw new CertificateTransactionException();
+        }
     }
 
+    @Transactional
     private void saveNewTagsFromCertificateInUpdate(int id, Set<Tag> certificateTags, List<Tag> dbTags) {
+        try{
         certificateTags.forEach(tagFromUser -> {
             if (dbTags.stream().noneMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
                 Long tagId = tagDAO.save(tagFromUser);
@@ -191,6 +215,9 @@ public class CertificateDAOImpl implements CertificateDAO {
                         id, tagId);
             }
         });
+        }catch(DataAccessException e){
+            throw new CertificateTransactionException();
+        }
     }
 
     private Certificate findById(int id){

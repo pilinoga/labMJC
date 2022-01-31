@@ -1,6 +1,7 @@
 package com.epam.esm.exception;
 
 import com.epam.esm.config.localization.Translator;
+import com.epam.esm.exception.certificate.CertificateTransactionException;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.exception.tag.NoSuchTagException;
 import com.epam.esm.exception.tag.TagAlreadyExistException;
@@ -52,6 +53,15 @@ public class AppExceptionHandler {
         data.setErrorMessage(message);
         data.setErrorCode(SortException.getCode());
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(CertificateTransactionException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(CertificateTransactionException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(SortException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_GATEWAY);
     }
 
     @ExceptionHandler
