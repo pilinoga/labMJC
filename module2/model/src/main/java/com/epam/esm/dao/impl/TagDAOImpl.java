@@ -48,7 +48,7 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
-    public Long save(Tag tag) {
+    public long save(Tag tag) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {

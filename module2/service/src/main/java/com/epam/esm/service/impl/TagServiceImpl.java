@@ -30,7 +30,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag save(Tag tag) {
-        Long id = tagDAO.save(tag);
+        long id = tagDAO.save(tag);
         tag.setId(id);
         return tag;
     }
