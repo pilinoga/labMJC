@@ -21,7 +21,7 @@ public class CertificateTagDAOImpl implements CertificateTagDAO {
 
 
     @Override
-    public List<CertificateTag> getAll(){
+    public List<CertificateTag> findAll(){
         return jdbcTemplate.query(GET_ALL_SQL, new BeanPropertyRowMapper<>(CertificateTag.class));
     }
     @Override

@@ -14,7 +14,7 @@ public interface CertificateTagDAO {
      *
      * @return list of objects
      */
-    List<CertificateTag> getAll();
+    List<CertificateTag> findAll();
 
     /**
      * Method for saving tag from certificate

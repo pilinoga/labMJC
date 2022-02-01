@@ -7,6 +7,12 @@ public class CertificateTag {
 
     public CertificateTag() {}
 
+    public CertificateTag(Long id, Long tagId, Long certificateId) {
+        this.id = id;
+        this.tagId = tagId;
+        this.certificateId = certificateId;
+    }
+
     public Long getId() {
         return id;
     }

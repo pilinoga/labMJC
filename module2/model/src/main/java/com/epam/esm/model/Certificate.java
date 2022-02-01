@@ -23,8 +23,24 @@ public class Certificate {
     public Certificate() {
     }
 
-    public Certificate( String name, String description, Double price,
-                        Integer duration, String createDate, String lastUpdateDate) {
+    public Certificate(Long id,
+                       String name,
+                       String description,
+                       Double price,
+                       Integer duration,
+                       String createDate,
+                       String lastUpdateDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public Certificate(String name, String description, Double price,
+                       Integer duration, String createDate, String lastUpdateDate) {
         this.name = name;
         this.description = description;
         this.price = price;

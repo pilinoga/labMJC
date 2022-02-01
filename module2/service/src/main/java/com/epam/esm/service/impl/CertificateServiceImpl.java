@@ -36,7 +36,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<Certificate> getAll() {
-        List<CertificateTag> certificateTags = certificateTagDAO.getAll();
+        List<CertificateTag> certificateTags = certificateTagDAO.findAll();
         List<Certificate> certificates = certificateDAO.findAll();
         return this.getCertificatesWithTags(certificateTags,certificates);
     }
@@ -144,7 +144,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     private List<Certificate> getByNameOrDescription(String param){
         List<Certificate> certificates = certificateDAO.findByNameOrDescription(param);
-        List<CertificateTag> list = certificateTagDAO.getAll();
+        List<CertificateTag> list = certificateTagDAO.findAll();
         certificates.forEach(certificate ->
                 list.stream().filter(tag ->
                         certificate.getId().equals(tag.getCertificateId())).forEach(tag -> {
@@ -192,7 +192,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     private Certificate getCertificate(long certificateId) {
         Certificate saved = certificateDAO.findByID(certificateId);
-        List<CertificateTag> list = certificateTagDAO.getAll();
+        List<CertificateTag> list = certificateTagDAO.findAll();
         list.stream().filter(tag ->
                 saved.getId().equals(tag.getCertificateId())).forEach(tag -> {
             Long idTag = tag.getTagId();

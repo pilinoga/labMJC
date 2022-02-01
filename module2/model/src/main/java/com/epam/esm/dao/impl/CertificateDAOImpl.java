@@ -93,7 +93,6 @@ public class CertificateDAOImpl implements CertificateDAO {
                 id);
     }
 
-
     @Override
     public void delete(int id) {
           this.searchById(id);
