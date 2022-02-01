@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class RestController represent api which allows to perform operations on tags.
+ * Class RestController represent api which allows to perform operations on certificates.
  */
 @RestController
 @RequestMapping("/api/certificates")
@@ -33,16 +33,6 @@ public class CertificateController {
     @Autowired
     public CertificateController(CertificateService certificateService) {
         this.certificateService = certificateService;
-    }
-
-    /**
-     * Method for getting all certificates from data source.
-     *
-     * @return list of found certificates
-     */
-    @GetMapping
-    public List<Certificate> getAllCertificates(){
-        return certificateService.getAll();
     }
 
     /**
@@ -64,7 +54,7 @@ public class CertificateController {
      * @param sort type of sort
      * @return list of found certificates
      */
-    @GetMapping("/search")
+    @GetMapping()
     public List<Certificate> getSearch(@RequestParam(required = false) String tag,
                             @RequestParam(required = false) String name,
                             @RequestParam(required = false) String sort) {
@@ -88,8 +78,8 @@ public class CertificateController {
         if(bindingResult.hasErrors()){
             throw new CertificateValidationException();
         }
-        certificateService.save(certificate);
-        return new ResponseEntity<>(certificate,HttpStatus.CREATED);
+        Certificate saved = certificateService.save(certificate);
+        return new ResponseEntity<>(saved,HttpStatus.CREATED);
     }
 
     /**
@@ -119,8 +109,8 @@ public class CertificateController {
         if(bindingResult.hasErrors()){
             throw new CertificateValidationException();
         }
-        certificateService.update(certificate,id);
-        return new ResponseEntity<>(certificate,HttpStatus.OK);
+        Certificate updated = certificateService.update(certificate, id);
+        return new ResponseEntity<>(updated,HttpStatus.OK);
     }
 
     /**
@@ -131,10 +121,10 @@ public class CertificateController {
      * @return HttpStatus OK
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> patchUpdateCertificate(@RequestBody Map<String, Object> updates,
+    public ResponseEntity<Certificate> patchUpdateCertificate(@RequestBody Map<String, Object> updates,
                                                     @PathVariable int id){
-        certificateService.patchUpdate(id,updates);
-        return new ResponseEntity<>(updates,HttpStatus.OK);
+        Certificate updated = certificateService.patchUpdate(id, updates);
+        return new ResponseEntity<>(updated,HttpStatus.OK);
     }
 
 }

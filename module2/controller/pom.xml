@@ -11,6 +11,14 @@
 
     <artifactId>controller</artifactId>
     <packaging>war</packaging>
+
+    <properties>
+        <springframework.version>5.3.13</springframework.version>
+        <javax.version>4.0.1</javax.version>
+        <jackson.version>2.13.1</jackson.version>
+    </properties>
+
+
     <dependencies>
         <dependency>
             <groupId>com.epam.esm</groupId>
@@ -22,33 +30,33 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>5.3.13</version>
+            <version>${springframework.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.3.13</version>
+            <version>${springframework.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.13</version>
+            <version>${springframework.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <version>${javax.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.1</version>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 

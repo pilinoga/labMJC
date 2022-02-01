@@ -11,11 +11,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-@Component
+@Repository
 public class TagDAOImpl implements TagDAO {
     private final JdbcTemplate jdbcTemplate;
     private static final String FIND_BY_ID_SQL = "SELECT * FROM tag WHERE id=?";
@@ -31,13 +31,13 @@ public class TagDAOImpl implements TagDAO {
     }
 
     @Override
-    public List<Tag> getAll(){
+    public List<Tag> findAll(){
         return jdbcTemplate.query(GET_ALL_SQL,
                 new BeanPropertyRowMapper<>(Tag.class));
     }
 
     @Override
-    public Tag getByID(int id) {
+    public Tag findByID(long id) {
         try{
             return jdbcTemplate.queryForObject(FIND_BY_ID_SQL,
                     new BeanPropertyRowMapper<>(Tag.class),id);
@@ -64,12 +64,12 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public void delete(int id) {
-            this.getByID(id);
+            this.findByID(id);
             jdbcTemplate.update(DELETE_SQL,id);
     }
 
     @Override
-    public Tag getTag(Tag tagFromUser) {
+    public Tag findTag(Tag tagFromUser) {
         return jdbcTemplate.queryForObject(FIND_BY_NAME_SQL,
                 new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
     }

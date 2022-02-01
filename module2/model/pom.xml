@@ -13,7 +13,15 @@
 
     <properties>
         <spring.version>5.3.13</spring.version>
+        <mysql.version>8.0.16</mysql.version>
+        <hibernate-validator.version>6.0.16.Final</hibernate-validator.version>
+        <h2database.version>1.4.200</h2database.version>
+        <spring-test.version>5.1.5.RELEASE</spring-test.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <junit.jupiter.version>5.7.1</junit.jupiter.version>
+
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.epam.esm</groupId>
@@ -25,7 +33,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.1.5.RELEASE</version>
+            <version>${spring-test.version}</version>
         </dependency>
 
         <dependency>
@@ -59,40 +67,34 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.16</version>
+            <version>${mysql.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.200</version>
+            <version>${h2database.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.1</version>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>5.1.5.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <version>${javax.servlet.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.16.Final</version>
+            <version>${hibernate-validator.version}</version>
         </dependency>
 
     </dependencies>

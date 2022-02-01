@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Repository
 public class CertificateDAOImpl implements CertificateDAO {
     private final JdbcTemplate jdbcTemplate;
 
@@ -39,7 +39,7 @@ public class CertificateDAOImpl implements CertificateDAO {
     }
 
     @Override
-    public List<Certificate> getAll(){
+    public List<Certificate> findAll(){
         return jdbcTemplate.query(GET_ALL_SQL,
                 new BeanPropertyRowMapper<>(Certificate.class));
     }
@@ -61,13 +61,13 @@ public class CertificateDAOImpl implements CertificateDAO {
     }
 
     @Override
-    public Certificate getByID(int id){
-        return this.findById(id);
+    public Certificate findByID(long id){
+        return this.searchById(id);
     }
 
     @Override
     public void update(Certificate certificate, int id)  {
-        this.findById(id);
+        this.searchById(id);
             jdbcTemplate.update(UPDATE_SQL,
                     certificate.getName(),
                     certificate.getDescription(),
@@ -79,7 +79,7 @@ public class CertificateDAOImpl implements CertificateDAO {
 
     @Override
     public void patchUpdate(int id, Map<String, Object> fields){
-        Certificate certificate = this.findById(id);
+        Certificate certificate = this.searchById(id);
         fields.putIfAbsent(NAME_COLUMN, certificate.getName());
         fields.putIfAbsent(DESCRIPTION_COLUMN, certificate.getDescription());
         fields.putIfAbsent(PRICE_COLUMN, certificate.getPrice());
@@ -96,7 +96,7 @@ public class CertificateDAOImpl implements CertificateDAO {
 
     @Override
     public void delete(int id) {
-          this.findById(id);
+          this.searchById(id);
           jdbcTemplate.update(DELETE_SQL,id);
     }
 
@@ -116,7 +116,7 @@ public class CertificateDAOImpl implements CertificateDAO {
         return certificates;
     }
 
-    private Certificate findById(int id){
+    private Certificate searchById(long id){
         try {
             return jdbcTemplate.queryForObject(FIND_BY_ID_SQL,
                     new BeanPropertyRowMapper<>(Certificate.class), id);

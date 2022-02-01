@@ -9,7 +9,7 @@ import com.epam.esm.model.CertificateTag;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class CertificateServiceImpl implements CertificateService {
     private final CertificateDAO certificateDAO;
     private final CertificateTagDAO certificateTagDAO ;
@@ -37,58 +37,53 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public List<Certificate> getAll() {
         List<CertificateTag> certificateTags = certificateTagDAO.getAll();
-        List<Certificate> certificates = certificateDAO.getAll();
+        List<Certificate> certificates = certificateDAO.findAll();
         return this.getCertificatesWithTags(certificateTags,certificates);
     }
 
     @Override
     @Transactional
-    public void save(Certificate certificate){
+    public Certificate save(Certificate certificate){
         long certificateId = certificateDAO.save(certificate);
         Set<Tag> tags = certificate.getTags();
-        List<Tag> all = tagDAO.getAll();
+        List<Tag> all = tagDAO.findAll();
         tags.forEach(tagFromUser -> {
             if (all.stream().anyMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
-                Tag tagFromDB = tagDAO.getTag(tagFromUser);
+                Tag tagFromDB = tagDAO.findTag(tagFromUser);
                 certificateTagDAO.saveTags(certificateId, tagFromDB.getId());
             } else {
-                Long tagId = tagDAO.save(tagFromUser);
+                long tagId = tagDAO.save(tagFromUser);
                 certificateTagDAO.saveTags(certificateId, tagId);
             }
         });
+        return this.getCertificate(certificateId);
+
     }
 
     @Override
     @Transactional
-    public void update(Certificate certificate, int id) {
+    public Certificate update(Certificate certificate, int id) {
         certificateDAO.update(certificate, id);
         Set<Tag> tags = certificate.getTags();
-        List<Tag> all = tagDAO.getAll();
+        List<Tag> all = tagDAO.findAll();
         tags.forEach(tagFromUser -> {
             if (all.stream().noneMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
-                Long tagId = tagDAO.save(tagFromUser);
-                certificateTagDAO.saveTags((long) id,tagId);
+                long tagId = tagDAO.save(tagFromUser);
+                certificateTagDAO.saveTags(id,tagId);
             }
         });
         tags.forEach(tagFromUser -> {
             if (all.stream().anyMatch(tag -> tag.getName().equals(tagFromUser.getName()))) {
-                long tagId = tagDAO.getTag(tagFromUser).getId();
-                certificateTagDAO.saveTags((long) id, tagId);
+                long tagId = tagDAO.findTag(tagFromUser).getId();
+                certificateTagDAO.saveTags( id, tagId);
             }
         });
+        return this.getCertificate(id);
     }
 
     @Override
     public Certificate getByID(int id) {
-        Certificate certificate = certificateDAO.getByID(id);
-        List<CertificateTag> list = certificateTagDAO.getAll();
-        list.stream().filter(tag ->
-                certificate.getId().equals(tag.getCertificateId())).forEach(tag -> {
-            Long idTag = tag.getTagId();
-            Tag tagFromDB = tagDAO.getByID(Math.toIntExact(idTag));
-            certificate.addTag(tagFromDB);
-        });
-        return certificate;
+        return this.getCertificate(id);
     }
 
     @Override
@@ -97,8 +92,9 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public void patchUpdate(int id, Map<String, Object> fields){
+    public Certificate  patchUpdate(int id, Map<String, Object> fields){
         certificateDAO.patchUpdate(id,fields);
+        return this.getCertificate(id);
     }
 
 
@@ -112,14 +108,14 @@ public class CertificateServiceImpl implements CertificateService {
         if (tag != null) {
             if (name != null) {
                 if (sort != null) {
-                    List<Certificate> certificates = getCertificates(tag, this.findByNameOrDescription(name));
+                    List<Certificate> certificates = getCertificates(tag, this.getByNameOrDescription(name));
                     if (sort.equalsIgnoreCase(ASC_SORT)) {
                         return this.sort(certificates,Comparator.comparing(Certificate::getName));
                     } else {
                         return this.sort(certificates,Comparator.comparing(Certificate::getName).reversed());
                     }
                 }
-                return getCertificates(tag, this.findByNameOrDescription(name));
+                return getCertificates(tag, this.getByNameOrDescription(name));
             }
             if (sort != null) {
                 if (sort.equalsIgnoreCase(ASC_SORT)) {
@@ -131,7 +127,7 @@ public class CertificateServiceImpl implements CertificateService {
             return this.getByTag(tag);
         }
         if (name != null) {
-            List<Certificate> certificates = this.findByNameOrDescription(name);
+            List<Certificate> certificates = this.getByNameOrDescription(name);
             if (sort != null) {
                 if (sort.equalsIgnoreCase(ASC_SORT)) {
                     return this.sort(certificates,Comparator.comparing(Certificate::getName));
@@ -146,14 +142,14 @@ public class CertificateServiceImpl implements CertificateService {
                 this.sort(this.getAll(), Comparator.comparing(Certificate::getName).reversed());
         }
 
-    private List<Certificate> findByNameOrDescription(String param){
+    private List<Certificate> getByNameOrDescription(String param){
         List<Certificate> certificates = certificateDAO.findByNameOrDescription(param);
         List<CertificateTag> list = certificateTagDAO.getAll();
         certificates.forEach(certificate ->
                 list.stream().filter(tag ->
                         certificate.getId().equals(tag.getCertificateId())).forEach(tag -> {
                     Long idTag = tag.getTagId();
-                    Tag tagFromDB = tagDAO.getByID(Math.toIntExact(idTag));
+                    Tag tagFromDB = tagDAO.findByID(Math.toIntExact(idTag));
                     certificate.addTag(tagFromDB);
                 }));
         return certificates;
@@ -188,10 +184,22 @@ public class CertificateServiceImpl implements CertificateService {
                 list.stream().filter(tag ->
                         certificate.getId().equals(tag.getCertificateId())).forEach(tag -> {
                     Long idTag = tag.getTagId();
-                    Tag tagFromDB = tagDAO.getByID(Math.toIntExact(idTag));
+                    Tag tagFromDB = tagDAO.findByID(Math.toIntExact(idTag));
                     certificate.addTag(tagFromDB);
                 }));
         return certificates;
+    }
+
+    private Certificate getCertificate(long certificateId) {
+        Certificate saved = certificateDAO.findByID(certificateId);
+        List<CertificateTag> list = certificateTagDAO.getAll();
+        list.stream().filter(tag ->
+                saved.getId().equals(tag.getCertificateId())).forEach(tag -> {
+            Long idTag = tag.getTagId();
+            Tag tagFromDB = tagDAO.findByID(Math.toIntExact(idTag));
+            saved.addTag(tagFromDB);
+        });
+        return saved;
     }
 
 }

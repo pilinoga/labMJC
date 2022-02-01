@@ -14,6 +14,6 @@ public interface TagDAO extends DAO<Tag> {
      * @param tagFromUser used to find an object
      * @return object
      */
-    Tag getTag(Tag tagFromUser);
+    Tag findTag(Tag tagFromUser);
 
 }

@@ -4,11 +4,10 @@ import com.epam.esm.dao.TagDAO;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-
-@Component
+@Service
 public class TagServiceImpl implements TagService {
 
     private TagDAO tagDAO;
@@ -20,12 +19,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getAll() {
-        return tagDAO.getAll();
+        return tagDAO.findAll();
     }
 
     @Override
     public Tag getByID(int id) {
-        return tagDAO.getByID(id);
+        return tagDAO.findByID(id);
     }
 
     @Override

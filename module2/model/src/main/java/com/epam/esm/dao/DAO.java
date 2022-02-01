@@ -13,7 +13,7 @@ public interface DAO<T> {
      *
      * @return list of objects
      */
-    List<T> getAll();
+    List<T> findAll();
 
     /**
      * Method for getting an objects by id.
@@ -21,7 +21,7 @@ public interface DAO<T> {
      * @param id  used to find an object
      * @return object
      */
-    T getByID(int id);
+    T findByID(long id);
 
     /**
      * Method for saving an object.

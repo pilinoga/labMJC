@@ -22,5 +22,5 @@ public interface CertificateTagDAO {
      * @param certificateId used by insert query
      * @param tagId used by insert query
      */
-    void saveTags(Long certificateId, Long tagId);
+    void saveTags(long certificateId, long tagId);
 }

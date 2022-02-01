@@ -42,7 +42,7 @@ class CertificateDAOImplTest {
         Certificate expected = new Certificate("TestName", "TestDesc", 12.5, 12, time, time);
         certificateDAOImpl.save(expected);
         expected.setId(testId);
-        Certificate actual = certificateDAOImpl.getByID(Math.toIntExact(testId));
+        Certificate actual = certificateDAOImpl.findByID(Math.toIntExact(testId));
         assertEquals(expected,actual);
     }
 
@@ -52,7 +52,7 @@ class CertificateDAOImplTest {
         long testId = 4;
         Certificate expected = new Certificate("name4", "descr4", 8.0, 9, time, time);
         expected.setId(testId);
-        Certificate actual = certificateDAOImpl.getByID(4);
+        Certificate actual = certificateDAOImpl.findByID(4);
         assertEquals(expected,actual);
     }
 
@@ -60,14 +60,14 @@ class CertificateDAOImplTest {
     public void shouldReturnCertificateByIdNegative() {
         long testId = 5L;
         assertThrows(NoSuchCertificateException.class,()->{
-            certificateDAOImpl.getByID(Math.toIntExact(testId));
+            certificateDAOImpl.findByID(Math.toIntExact(testId));
         });
     }
 
     @Test
     public void shouldReturnAllCertificates() {
         int expectedSize = 4;
-        int actualSize = certificateDAOImpl.getAll().size();
+        int actualSize = certificateDAOImpl.findAll().size();
         assertEquals(expectedSize,actualSize);
     }
 
@@ -76,7 +76,7 @@ class CertificateDAOImplTest {
         int testId = 4;
         certificateDAOImpl.delete(testId);
         assertThrows(NoSuchCertificateException.class,()->{
-            certificateDAOImpl.getByID(Math.toIntExact(testId));
+            certificateDAOImpl.findByID(Math.toIntExact(testId));
         });
     }
 
@@ -102,7 +102,7 @@ class CertificateDAOImplTest {
         Certificate expected = new Certificate("newName", "newDescr", 10.0, 5, time, time);
         expected.setId((long) id);
         certificateDAOImpl.update(expected,id);
-        Certificate actual = certificateDAOImpl.getByID(4);
+        Certificate actual = certificateDAOImpl.findByID(4);
         assertEquals(expected,actual);
     }
 
@@ -128,7 +128,7 @@ class CertificateDAOImplTest {
         String time = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
         Certificate expected = new Certificate(newName, "descr4", 8.0, newDuration, time, time);
         certificateDAOImpl.patchUpdate(4,fieldsForUpdate);
-        Certificate actual = certificateDAOImpl.getByID(4);
+        Certificate actual = certificateDAOImpl.findByID(4);
     }
 
     @Test

@@ -5,10 +5,10 @@ import com.epam.esm.model.CertificateTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
-@Component
+@Repository
 public class CertificateTagDAOImpl implements CertificateTagDAO {
     private final JdbcTemplate jdbcTemplate;
     private static final String GET_ALL_SQL = "SELECT * FROM certificate_tag";
@@ -25,7 +25,7 @@ public class CertificateTagDAOImpl implements CertificateTagDAO {
         return jdbcTemplate.query(GET_ALL_SQL, new BeanPropertyRowMapper<>(CertificateTag.class));
     }
     @Override
-    public void saveTags(Long certificateId, Long tagId) {
+    public void saveTags(long certificateId, long tagId) {
         jdbcTemplate.update(SAVE_SQL, certificateId, tagId);
     }
 }
