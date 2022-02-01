@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class contains spring configuration for module to work with localization.
+ */
 @Configuration
 public class LanguageConfig extends AcceptHeaderLocaleResolver
         implements WebMvcConfigurer {

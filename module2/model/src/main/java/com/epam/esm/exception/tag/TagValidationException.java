@@ -1,5 +1,9 @@
 package com.epam.esm.exception.tag;
 
+/**
+ * TagValidationException is generated in case received invalid parameters.
+ */
+
 public class TagValidationException extends RuntimeException{
     private static final String errorMessage = "tagValidationException";
     private static final int code = 10004;

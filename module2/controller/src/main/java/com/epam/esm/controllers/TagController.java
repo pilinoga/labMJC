@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Class TagController represent api which allows to perform operations on tags.
+ */
 @RestController
 @RequestMapping("/api/tags")
-
 public class TagController {
     private final TagService tagService;
 
@@ -28,16 +30,34 @@ public class TagController {
         this.tagService = tagService;
     }
 
+    /**
+     * Method for getting all tags from data source.
+     *
+     * @return list of found tags
+     */
     @GetMapping()
     public List<Tag> getAllTags(){
         return tagService.getAll();
     }
 
+    /**
+     * Method for getting tag by ID.
+     *
+     * @param id ID of tag
+     * @return found tag
+     */
     @GetMapping("/{id}")
     public Tag getTagByID(@PathVariable int id) {
         return tagService.getByID(id);
     }
 
+    /**
+     * Method for saving new tag.
+     *
+     * @param tag tag for saving
+     * @param bindingResult holds the result of a validation and binding and contains errors
+     * @return HttpStatus CREATED
+     */
     @PostMapping()
     public ResponseEntity<Tag> saveTag(@Valid @RequestBody Tag tag, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -48,6 +68,12 @@ public class TagController {
 
     }
 
+    /**
+     * Method for deleting tag by ID.
+     *
+     * @param id ID of tag
+     * @return HttpStatus NO_CONTENT
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTag(@PathVariable int id){
         tagService.delete(id);

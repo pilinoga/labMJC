@@ -6,6 +6,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 import java.util.Locale;
 
+/**
+ * Class is designed for getting localized message.
+ */
 @Component
 public class Translator {
 

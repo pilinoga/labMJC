@@ -13,6 +13,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
+/**
+ * Class contains spring configuration for module.
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:database.properties")

@@ -1,5 +1,8 @@
 package com.epam.esm.exception;
 
+/**
+ * Class is designed for representing objets that will be returned in case of exception is generated.
+ */
 public class ErrorData {
     private String errorMessage;
     private int errorCode;

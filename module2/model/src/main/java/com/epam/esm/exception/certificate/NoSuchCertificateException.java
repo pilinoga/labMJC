@@ -1,5 +1,9 @@
 package com.epam.esm.exception.certificate;
 
+/**
+ * NoSuchCertificateException is generated in case of certificate absence in database.
+ */
+
 public class NoSuchCertificateException extends RuntimeException{
     private static final String errorMessage = "noSuchCertificateException";
     private static final int code = 10001;

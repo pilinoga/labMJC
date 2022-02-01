@@ -22,6 +22,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class RestController represent api which allows to perform operations on tags.
+ */
 @RestController
 @RequestMapping("/api/certificates")
 public class CertificateController {
@@ -32,16 +35,35 @@ public class CertificateController {
         this.certificateService = certificateService;
     }
 
+    /**
+     * Method for getting all certificates from data source.
+     *
+     * @return list of found certificates
+     */
     @GetMapping
     public List<Certificate> getAllCertificates(){
         return certificateService.getAll();
     }
 
+    /**
+     * Method for getting certificate by ID.
+     *
+     * @param id ID of certificate
+     * @return found certificate
+     */
     @GetMapping("/{id}")
     public Certificate getCertificateById( @PathVariable int id){
         return certificateService.getByID(id);
     }
 
+    /**
+     *  Method for getting certificates by parameters.
+     *
+     * @param tag name of tag
+     * @param name name or part of name of certificate
+     * @param sort type of sort
+     * @return list of found certificates
+     */
     @GetMapping("/search")
     public List<Certificate> getSearch(@RequestParam(required = false) String tag,
                             @RequestParam(required = false) String name,
@@ -53,6 +75,13 @@ public class CertificateController {
         return  certificates;
     }
 
+    /**
+     * Method for saving new certificate.
+     *
+     * @param certificate certificate for saving
+     * @param bindingResult holds the result of a validation and binding and contains errors
+     * @return HttpStatus CREATED
+     */
     @PostMapping()
     public ResponseEntity<Certificate> saveCertificate(@Valid @RequestBody Certificate certificate,
                                                        BindingResult bindingResult) {
@@ -63,12 +92,26 @@ public class CertificateController {
         return new ResponseEntity<>(certificate,HttpStatus.CREATED);
     }
 
+    /**
+     * Method for deleting certificate by ID.
+     *
+     * @param id ID of tag
+     * @return HttpStatus NO_CONTENT
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCertificate(@PathVariable int id){
         certificateService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Method for updating certificate by ID.
+     *
+     * @param id ID of tag
+     * @param certificate certificate with fields for updating
+     * @param bindingResult holds the result of a validation and binding and contains errors
+     * @return HttpStatus OK
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Certificate> updateCertificate(@Valid @RequestBody Certificate certificate,
                                                          @PathVariable int id,
@@ -80,6 +123,13 @@ public class CertificateController {
         return new ResponseEntity<>(certificate,HttpStatus.OK);
     }
 
+    /**
+     * Method for updating certificate by ID.
+     *
+     * @param id ID of tag
+     * @param updates contains fields for updating
+     * @return HttpStatus OK
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<Map<String, Object>> patchUpdateCertificate(@RequestBody Map<String, Object> updates,
                                                     @PathVariable int id){

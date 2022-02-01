@@ -11,6 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
+/**
+ * Class contains spring configuration for module(tests).
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:database.properties")

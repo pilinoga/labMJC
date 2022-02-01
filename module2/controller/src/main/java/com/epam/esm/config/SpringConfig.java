@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Class contains spring configuration for module.
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
 @EnableWebMvc

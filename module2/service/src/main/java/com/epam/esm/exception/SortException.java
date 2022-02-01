@@ -1,5 +1,8 @@
 package com.epam.esm.exception;
 
+/**
+ * SortException is generated in case received invalid parameter.
+ */
 public class SortException extends RuntimeException{
     private static final String errorMessage = "sortException";
     private static final int code = 20001;
