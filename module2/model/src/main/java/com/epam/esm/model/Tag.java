@@ -1,9 +1,11 @@
 package com.epam.esm.model;
 
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Tag {
     private Long id;
+    @Size(min = 2,max = 45)
     private String name;
 
     public Tag() {

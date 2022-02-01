@@ -2,9 +2,11 @@ package com.epam.esm.exception;
 
 import com.epam.esm.config.localization.Translator;
 import com.epam.esm.exception.certificate.CertificateTransactionException;
+import com.epam.esm.exception.certificate.CertificateValidationException;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.exception.tag.NoSuchTagException;
 import com.epam.esm.exception.tag.TagAlreadyExistException;
+import com.epam.esm.exception.tag.TagValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +67,23 @@ public class AppExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(TagValidationException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(TagValidationException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(TagValidationException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(CertificateValidationException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(CertificateValidationException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(CertificateValidationException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(Exception exception){
         ErrorData data = new ErrorData();
         String message = translator.toLocale(BadRequestException.getErrorMessage());
@@ -72,4 +91,5 @@ public class AppExceptionHandler {
         data.setErrorCode(BadRequestException.getCode());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
+
 }

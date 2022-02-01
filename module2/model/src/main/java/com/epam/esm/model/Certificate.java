@@ -1,14 +1,20 @@
 package com.epam.esm.model;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class Certificate {
     private Long id;
+    @Size(min = 2,max = 45)
     private String name;
+    @Size(min = 2,max = 45)
     private String description;
+    @Min(value = 0)
     private Double price;
+    @Min(value = 0)
     private Integer duration;
     private String createDate;
     private String lastUpdateDate;
@@ -19,7 +25,6 @@ public class Certificate {
 
     public Certificate( String name, String description, Double price,
                         Integer duration, String createDate, String lastUpdateDate) {
-
         this.name = name;
         this.description = description;
         this.price = price;

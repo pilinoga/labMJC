@@ -1,11 +1,13 @@
 package com.epam.esm.controllers;
 
+import com.epam.esm.exception.certificate.CertificateValidationException;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +38,7 @@ public class CertificateController {
     }
 
     @GetMapping("/{id}")
-    public Certificate getCertificateById(@PathVariable int id){
+    public Certificate getCertificateById( @PathVariable int id){
         return certificateService.getByID(id);
     }
 
@@ -51,7 +54,11 @@ public class CertificateController {
     }
 
     @PostMapping()
-    public ResponseEntity<Certificate> saveCertificate(@RequestBody Certificate certificate) {
+    public ResponseEntity<Certificate> saveCertificate(@Valid @RequestBody Certificate certificate,
+                                                       BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new CertificateValidationException();
+        }
         certificateService.save(certificate);
         return new ResponseEntity<>(certificate,HttpStatus.CREATED);
     }
@@ -63,8 +70,12 @@ public class CertificateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Certificate> updateCertificate(@RequestBody Certificate certificate,
-                                                         @PathVariable int id) {
+    public ResponseEntity<Certificate> updateCertificate(@Valid @RequestBody Certificate certificate,
+                                                         @PathVariable int id,
+                                                         BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new CertificateValidationException();
+        }
         certificateService.update(certificate,id);
         return new ResponseEntity<>(certificate,HttpStatus.OK);
     }
@@ -75,6 +86,5 @@ public class CertificateController {
         certificateService.patchUpdate(id,updates);
         return new ResponseEntity<>(updates,HttpStatus.OK);
     }
-
 
 }
