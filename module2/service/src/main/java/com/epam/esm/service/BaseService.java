@@ -2,7 +2,7 @@ package com.epam.esm.service;
 
 import java.util.List;
 
-public interface Service<T> {
+public interface BaseService<T> {
 
     /**
      *  Method for getting a list of objects.

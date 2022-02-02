@@ -4,6 +4,7 @@ package com.epam.esm.service;
 import com.epam.esm.dao.impl.CertificateDAOImpl;
 import com.epam.esm.dao.impl.CertificateTagDAOImpl;
 import com.epam.esm.dao.impl.TagDAOImpl;
+import com.epam.esm.exception.SortException;
 import com.epam.esm.exception.certificate.NoSuchCertificateException;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.model.CertificateTag;
@@ -27,8 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -121,6 +127,13 @@ public class CertificateServiceImplTest {
     }
 
     @Test
+    void shouldReturnCertificatesBySort_Negative(){
+        assertThrows(SortException.class,()->{
+            service.search(null,null,"noSuchSort");
+        });
+    }
+
+    @Test
     void shouldReturnAllCertificates(){
         when(certificateDAO.findAll()).thenReturn(certificates);
         when(certificateTagDAO.findAll()).thenReturn(certificateTags);
@@ -170,4 +183,18 @@ public class CertificateServiceImplTest {
         assertEquals(1,actualID);
     }
 
+    @Test
+    void shouldDeleteCertificateByID(){
+        doNothing().when(certificateDAO).delete(anyInt());
+        service.delete(1);
+        verify(certificateDAO,times(1)).delete(1);
+    }
+
+    @Test()
+    void shouldDeleteTagByID_Negative(){
+        doThrow(new NoSuchCertificateException()).when(certificateDAO).delete(1);
+        assertThrows(NoSuchCertificateException.class,()->{
+            service.delete(1);
+        });
+    }
 }

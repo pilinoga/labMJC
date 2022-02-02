@@ -8,7 +8,7 @@ import java.util.Map;
  * Interface CertificateService is designed for basic work with Certificate objects.
  */
 
-public interface CertificateService extends Service<Certificate> {
+public interface CertificateService extends BaseService<Certificate> {
 
     /**
      * Method for updating an object.
