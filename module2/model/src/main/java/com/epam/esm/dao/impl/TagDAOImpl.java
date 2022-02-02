@@ -1,0 +1,77 @@
+package com.epam.esm.dao.impl;
+
+import com.epam.esm.dao.TagDAO;
+import com.epam.esm.exception.tag.NoSuchTagException;
+import com.epam.esm.exception.tag.TagAlreadyExistException;
+import com.epam.esm.model.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+import java.sql.PreparedStatement;
+import java.util.List;
+
+@Repository
+public class TagDAOImpl implements TagDAO {
+    private final JdbcTemplate jdbcTemplate;
+    private static final String FIND_BY_ID_SQL = "SELECT * FROM tag WHERE id=?";
+    private static final String GET_ALL_SQL= "SELECT * FROM tag";
+    private static final String SAVE_SQL = "INSERT INTO tag (name) VALUES (?) ";
+    private static final String DELETE_SQL = "DELETE FROM tag WHERE id=?";
+    private static final String FIND_BY_NAME_SQL = "SELECT * FROM tag WHERE name =?";
+    private static final String ID_COLUMN= "id";
+
+    @Autowired
+    public TagDAOImpl(JdbcTemplate jdbcTemplate ) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public List<Tag> findAll(){
+        return jdbcTemplate.query(GET_ALL_SQL,
+                new BeanPropertyRowMapper<>(Tag.class));
+    }
+
+    @Override
+    public Tag findByID(long id) {
+        try{
+            return jdbcTemplate.queryForObject(FIND_BY_ID_SQL,
+                    new BeanPropertyRowMapper<>(Tag.class),id);
+        }
+        catch (DataAccessException e){
+            throw new NoSuchTagException();
+        }
+    }
+
+    @Override
+    public long save(Tag tag) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(SAVE_SQL, new String[]{ID_COLUMN});
+                ps.setString(1, tag.getName());
+                return ps;
+            }, keyHolder);
+            return keyHolder.getKey().longValue();
+        }catch (DuplicateKeyException exception){
+            throw new TagAlreadyExistException();
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+            this.findByID(id);
+            jdbcTemplate.update(DELETE_SQL,id);
+    }
+
+    @Override
+    public Tag findTag(Tag tagFromUser) {
+        return jdbcTemplate.queryForObject(FIND_BY_NAME_SQL,
+                new BeanPropertyRowMapper<>(Tag.class), tagFromUser.getName());
+    }
+
+}
