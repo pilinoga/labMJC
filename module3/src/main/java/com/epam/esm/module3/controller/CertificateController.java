@@ -25,6 +25,10 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class CertificateController represent api which allows to perform operations on certificates.
+ */
+
 @RestController
 @RequestMapping("/api/certificates")
 public class CertificateController {
@@ -41,6 +45,13 @@ public class CertificateController {
         this.converter = converter;
     }
 
+    /**
+     * Method to get certificate by parameters
+     *
+     * @param params parameters for filtering
+     * @return list of certificatesDto
+     */
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<CertificateDto> getFilter(@RequestParam MultiValueMap<String, String> params) {
@@ -52,6 +63,13 @@ public class CertificateController {
         //todo pagination
     }
 
+    /**
+     * Method to get certificate by ID.
+     *
+     * @param id ID of certificate
+     * @return certificateDto
+     */
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CertificateDto getCertificateById( @PathVariable Long id){
@@ -60,6 +78,14 @@ public class CertificateController {
         hateoas.addLinks(dto);
         return dto;
     }
+
+    /**
+     * Method to save new certificate.
+     *
+     * @param dto certificate for saving
+     * @param bindingResult holds the result of a validation and binding and contains errors
+     * @return saved certificateDto
+     */
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -75,11 +101,27 @@ public class CertificateController {
         return certificateDto;
     }
 
+    /**
+     * Method to delete certificate by ID.
+     *
+     * @param id ID of certificate
+     * @return HttpStatus NO_CONTENT
+     */
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCertificate(@PathVariable Long id){
         service.delete(id);
     }
+
+    /**
+     * Method to update certificate by ID.
+     *
+     * @param dto certificate to update
+     * @param id id of certificate
+     * @param bindingResult holds the result of a validation and binding and contains errors
+     * @return updated certificateDto
+     */
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

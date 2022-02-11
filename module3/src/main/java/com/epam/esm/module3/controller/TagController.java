@@ -23,6 +23,10 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class TagController represent api which allows to perform operations on tags.
+ */
+
 @RestController
 @RequestMapping("/api/tags")
 public class TagController {
@@ -39,6 +43,15 @@ public class TagController {
         this.converter=converter;
     }
 
+
+    /**
+     * Method to get all tags from data source.
+     *
+     * @param page page for getting
+     * @param size size of page
+     * @return list of tagDto
+     */
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<TagDto> getAllTags(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -50,6 +63,13 @@ public class TagController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Method to get tag by ID.
+     *
+     * @param id ID of tag
+     * @return tagDto
+     */
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getTagByID(@PathVariable Long id) {
@@ -59,6 +79,12 @@ public class TagController {
         return dto;
     }
 
+    /**
+     * Method to get tag of a user with the highest cost of all orders
+     *
+     * @return tagDto
+     */
+
     @GetMapping("/top")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getTopTag() {
@@ -67,6 +93,14 @@ public class TagController {
         hateoas.addLinks(dto);
         return dto;
     }
+
+    /**
+     * Method to save new tag.
+     *
+     * @param dto tag for saving
+     * @param bindingResult holds the result of a validation and binding and contains errors
+     * @return saved tagDto
+     */
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -82,6 +116,12 @@ public class TagController {
 
     }
 
+    /**
+     * Method to delete tag by ID.
+     *
+     * @param id ID of tag
+     * @return HttpStatus NO_CONTENT
+     */
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

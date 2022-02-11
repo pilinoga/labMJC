@@ -21,6 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class UserController represent api which allows to perform operations on user.
+ */
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -43,6 +47,14 @@ public class UserController {
         this.orderConverter = orderConverter;
     }
 
+    /**
+     * Method to get all users from data source.
+     *
+     * @param page page for getting
+     * @param size size of page
+     * @return list of userDto
+     */
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getAllUsers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -54,6 +66,13 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Method to get user by ID.
+     *
+     * @param id ID of user
+     * @return userDto
+     */
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto getUserByID(@PathVariable Long id) {
@@ -62,6 +81,13 @@ public class UserController {
         userHateoas.addLinks(dto);
         return dto;
     }
+
+    /**
+     * Method to get list of orders by userID.
+     *
+     * @param id ID of user
+     * @return list of orderDto
+     */
 
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
@@ -74,6 +100,14 @@ public class UserController {
 
     }
 
+    /**
+     * Method to get order by userID and orderID.
+     *
+     * @param userId ID of user
+     * @param orderId ID of order
+     * @return orderDto
+     */
+
     @GetMapping("/{userId}/orders/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDto getUserOrder(@PathVariable Long userId, @PathVariable Long orderId) {
@@ -82,6 +116,14 @@ public class UserController {
         orderHateoas.addLinks(dto);
         return dto;
     }
+
+    /**
+     * Method to create an order
+     *
+     * @param dto order to create
+     * @param userId id of user
+     * @return created order
+     */
 
     @PostMapping("/{userId}/orders")
     @ResponseStatus(HttpStatus.CREATED)

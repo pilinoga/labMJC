@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class OrderController represent api which allows to perform operations on orders.
+ */
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -33,6 +37,14 @@ public class OrderController {
         this.converter = converter;
     }
 
+    /**
+     * Method to get all orders from data source.
+     *
+     * @param page page for getting
+     * @param size size of page
+     * @return list of orderDto
+     */
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<OrderDto> getAllOrders(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -43,6 +55,13 @@ public class OrderController {
                 .peek(hateoas::addLinks)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Method to get order by ID.
+     *
+     * @param id ID of order
+     * @return orderDto
+     */
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
