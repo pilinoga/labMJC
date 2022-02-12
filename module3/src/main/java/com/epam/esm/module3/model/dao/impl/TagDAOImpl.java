@@ -47,9 +47,7 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public List<Tag> findTags() {
-        Query query = entityManager.createQuery(FIND_ALL,Tag.class);
-        return query.getResultList();
-
+       return entityManager.createQuery(FIND_ALL,Tag.class).getResultList();
     }
 
     @Override

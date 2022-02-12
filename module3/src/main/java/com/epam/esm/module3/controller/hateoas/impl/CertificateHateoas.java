@@ -11,8 +11,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class CertificateHateoas implements Hateoas<CertificateDto> {
-    private final Class<CertificateController> CONTROLLER = CertificateController.class;
-    private final Class<TagController> TAG_CONTROLLER = TagController.class;
+    private static final Class<CertificateController> CONTROLLER = CertificateController.class;
+    private static final Class<TagController> TAG_CONTROLLER = TagController.class;
 
     @Override
     public void addLinks(CertificateDto certificateDto) {

@@ -10,7 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class OrderHateoas implements Hateoas<OrderDto> {
-    private final Class<OrderController> CONTROLLER = OrderController.class;
+    private static final Class<OrderController> CONTROLLER = OrderController.class;
 
     @Override
     public void addLinks(OrderDto orderDto) {

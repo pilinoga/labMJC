@@ -13,7 +13,7 @@ public abstract class AbstractEntity {
     @Column(name="id")
     private Long id;
 
-    public AbstractEntity(Long id) {
+    protected AbstractEntity(Long id) {
         this.id = id;
     }
 

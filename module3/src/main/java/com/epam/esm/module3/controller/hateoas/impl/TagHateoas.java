@@ -10,7 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class TagHateoas implements Hateoas<TagDto> {
-    private final Class<TagController> CONTROLLER = TagController.class;
+    private static final Class<TagController> CONTROLLER = TagController.class;
 
     @Override
     public void addLinks(TagDto tagDto) {
