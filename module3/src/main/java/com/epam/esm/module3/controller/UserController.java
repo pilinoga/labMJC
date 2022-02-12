@@ -3,12 +3,15 @@ package com.epam.esm.module3.controller;
 import com.epam.esm.module3.controller.dto.OrderDto;
 import com.epam.esm.module3.controller.dto.UserDto;
 import com.epam.esm.module3.controller.dto.converter.DtoConverter;
+import com.epam.esm.module3.controller.exception.OrderValidationException;
 import com.epam.esm.module3.controller.hateoas.Hateoas;
 import com.epam.esm.module3.model.entity.Order;
 import com.epam.esm.module3.model.entity.User;
+import com.epam.esm.module3.service.OrderService;
 import com.epam.esm.module3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService service;
+    private final OrderService orderService;
     private final Hateoas<UserDto> userHateoas;
     private final Hateoas<OrderDto> orderHateoas;
     private final DtoConverter<User,UserDto> userConverter;
@@ -39,12 +44,14 @@ public class UserController {
                           Hateoas<UserDto> userHateoas,
                           Hateoas<OrderDto> orderHateoas,
                           DtoConverter<User, UserDto> userConverter,
-                          DtoConverter<Order, OrderDto> orderConverter) {
+                          DtoConverter<Order, OrderDto> orderConverter,
+                          OrderService orderService) {
         this.service = service;
         this.userHateoas = userHateoas;
         this.orderHateoas = orderHateoas;
         this.userConverter = userConverter;
         this.orderConverter = orderConverter;
+        this.orderService = orderService;
     }
 
     /**
@@ -127,9 +134,14 @@ public class UserController {
 
     @PostMapping("/{userId}/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto saveOrder(@RequestBody OrderDto dto, @PathVariable Long userId) {
+    public OrderDto saveOrder(@Valid @RequestBody OrderDto dto,
+                              BindingResult bindingResult,
+                              @PathVariable Long userId) {
+        if(bindingResult.hasErrors()){
+            throw new OrderValidationException();
+        }
         Order toSave = orderConverter.convert(dto);
-        Order order = service.saveOrder(toSave, userId);
+        Order order = orderService.saveOrder(toSave, userId);
         OrderDto orderDto = orderConverter.convert(order);
         orderHateoas.addLinks(orderDto);
         return orderDto;

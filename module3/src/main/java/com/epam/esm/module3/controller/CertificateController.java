@@ -60,7 +60,6 @@ public class CertificateController {
                 .map(converter::convert)
                 .peek(hateoas::addLinks)
                 .collect(Collectors.toList());
-        //todo pagination
     }
 
     /**
@@ -105,7 +104,6 @@ public class CertificateController {
      * Method to delete certificate by ID.
      *
      * @param id ID of certificate
-     * @return HttpStatus NO_CONTENT
      */
 
     @DeleteMapping("/{id}")

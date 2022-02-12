@@ -2,13 +2,16 @@ package com.epam.esm.module3.controller.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
 public class OrderDto extends RepresentationModel<OrderDto> {
     private Long id;
     private Double price;
     private String purchaseDate;
+    @Min(value = 1)
     private Long userId;
+    @Min(value = 1)
     private Long certificateId;
 
     public OrderDto() {

@@ -2,6 +2,7 @@ package com.epam.esm.module3.controller.exception.handler;
 
 import com.epam.esm.module3.controller.exception.CertificateValidationException;
 import com.epam.esm.module3.controller.exception.ErrorData;
+import com.epam.esm.module3.controller.exception.OrderValidationException;
 import com.epam.esm.module3.controller.exception.TagValidationException;
 import com.epam.esm.module3.controller.localization.Translator;
 import com.epam.esm.module3.service.exception.NoSuchCertificateException;
@@ -114,6 +115,15 @@ public class AppExceptionHandler {
         String message = translator.toLocale(UniqueNameTagException.getErrorMessage());
         data.setErrorMessage(message);
         data.setErrorCode(UniqueNameTagException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(OrderValidationException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(OrderValidationException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(OrderValidationException.getCode());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 
