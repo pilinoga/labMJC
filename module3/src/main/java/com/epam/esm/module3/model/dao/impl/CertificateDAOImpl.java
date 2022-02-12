@@ -3,6 +3,7 @@ package com.epam.esm.module3.model.dao.impl;
 import com.epam.esm.module3.model.dao.CertificateDAO;
 import com.epam.esm.module3.model.entity.Certificate;
 import com.epam.esm.module3.model.entity.Tag;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class CertificateDAOImpl implements CertificateDAO {
     private static final String FIND_ALL = "select c from Certificate c";
-    private static final String DELETE = "delete from Certificate where id =:id";
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
     private static final String JOIN_TAGS = "tags";
@@ -39,6 +39,8 @@ public class CertificateDAOImpl implements CertificateDAO {
     private static final String TAG_PARAMETER = "tag";
     private static final String SORT_PARAMETER = "sort";
     private static final String ASC_SORT = "asc";
+    private static final String PAGE = "page";
+    private static final String SIZE = "size";
     private final String date = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
 
     @PersistenceContext
@@ -120,7 +122,20 @@ public class CertificateDAOImpl implements CertificateDAO {
 
         cq.select(root)
                 .where(predicates.toArray(new Predicate[]{}));
-        List<Certificate> resultList = entityManager.createQuery(cq).getResultList();
+
+        List<Certificate> resultList ;
+        if(params.get(SIZE)!=null &&
+                params.get(PAGE)!=null){
+            int size = Integer.parseInt(params.get(SIZE).get(0));
+            int page = Integer.parseInt(params.get(PAGE).get(0));
+            Pageable pageable = PageRequest.of(page, size);
+            resultList = entityManager.createQuery(cq)
+                    .setFirstResult((int) pageable.getOffset())
+                    .setMaxResults(pageable.getPageSize())
+                    .getResultList();
+        }else{
+            resultList = entityManager.createQuery(cq).getResultList();
+        }
 
         if(params.get(SORT_PARAMETER) != null){
             if(params.get(SORT_PARAMETER).get(0).equalsIgnoreCase(ASC_SORT)){
