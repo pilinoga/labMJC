@@ -74,9 +74,8 @@ public class TagServiceImpl implements TagService {
         Map<Tag, Long> map= tags.stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         Long count = map.values().stream().max(Long::compareTo).get();
-        Tag tag = map.entrySet().stream()
+        return map.entrySet().stream()
                 .filter(e -> e.getValue().equals(count)).findFirst().get().getKey();
-        return tag;
     }
 
     @Override

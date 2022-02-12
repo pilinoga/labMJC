@@ -9,4 +9,14 @@ import com.epam.esm.module3.model.entity.Order;
 
 public interface OrderService extends AbstractService<Order>{
 
+
+    /**
+     * Method to save an order.
+     *
+     * @param order object for saving
+     * @param id certificate id
+     * @return saved order
+     */
+    Order saveOrder(Order order, Long id);
+
 }

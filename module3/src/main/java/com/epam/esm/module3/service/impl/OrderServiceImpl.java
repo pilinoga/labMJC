@@ -1,9 +1,15 @@
 package com.epam.esm.module3.service.impl;
 
+import com.epam.esm.module3.model.dao.CertificateDAO;
 import com.epam.esm.module3.model.dao.OrderDAO;
+import com.epam.esm.module3.model.dao.UserDAO;
+import com.epam.esm.module3.model.entity.Certificate;
 import com.epam.esm.module3.model.entity.Order;
+import com.epam.esm.module3.model.entity.User;
 import com.epam.esm.module3.service.OrderService;
+import com.epam.esm.module3.service.exception.NoSuchCertificateException;
 import com.epam.esm.module3.service.exception.NoSuchOrderException;
+import com.epam.esm.module3.service.exception.NoSuchUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +22,14 @@ import java.util.Optional;
 @Transactional
 public class OrderServiceImpl implements OrderService {
     private final OrderDAO orderDAO;
+    private final CertificateDAO certificateDAO;
+    private final UserDAO userDAO;
 
     @Autowired
-    public OrderServiceImpl(OrderDAO orderDAO) {
+    public OrderServiceImpl(OrderDAO orderDAO, CertificateDAO certificateDAO, UserDAO userDAO) {
         this.orderDAO = orderDAO;
+        this.certificateDAO = certificateDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -36,6 +46,24 @@ public class OrderServiceImpl implements OrderService {
         }
         return byID.get();
 
+    }
+
+    @Override
+    public Order saveOrder(Order order, Long id){
+        Optional<User> user = userDAO.findByID(id);
+        if(user.isEmpty()){
+            throw new NoSuchUserException();
+        }
+        Long certificateID = order.getCertificate().getId();
+        Optional<Certificate> certificate = certificateDAO.findByID(certificateID);
+        if(certificate.isEmpty()){
+            throw new NoSuchCertificateException();
+        }
+        order.setUser(user.get());
+        order.setCertificate(certificate.get());
+        Double price = certificate.get().getPrice();
+        order.setPrice(price);
+        return orderDAO.save(order);
     }
 
     @Override

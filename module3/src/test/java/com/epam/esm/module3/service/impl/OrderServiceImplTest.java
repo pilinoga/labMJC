@@ -1,7 +1,11 @@
 package com.epam.esm.module3.service.impl;
 
+import com.epam.esm.module3.model.dao.impl.CertificateDAOImpl;
 import com.epam.esm.module3.model.dao.impl.OrderDAOImpl;
+import com.epam.esm.module3.model.dao.impl.UserDAOImpl;
+import com.epam.esm.module3.model.entity.Certificate;
 import com.epam.esm.module3.model.entity.Order;
+import com.epam.esm.module3.model.entity.User;
 import com.epam.esm.module3.service.exception.NoSuchOrderException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,6 +34,10 @@ public class OrderServiceImplTest {
 
     @Mock
     private OrderDAOImpl dao = Mockito.mock(OrderDAOImpl.class);
+    @Mock
+    private UserDAOImpl userDAO = Mockito.mock(UserDAOImpl.class);
+    @Mock
+    private CertificateDAOImpl certificateDAO = Mockito.mock(CertificateDAOImpl.class);
 
     @InjectMocks
     private OrderServiceImpl service;
@@ -43,6 +51,29 @@ public class OrderServiceImplTest {
         orders.add(new Order());
     }
 
+    @Test
+    void shouldSaveOrder(){
+        User user = new User();
+        user.setId(1L);
+
+        Certificate certificate = new Certificate();
+        certificate.setId(1L);
+        certificate.setPrice(10.5);
+
+        Order order = new Order();
+        order.setId(1L);
+        order.setCertificate(certificate);
+
+        when(userDAO.findByID(user.getId())).thenReturn(Optional.of(user));
+        when(certificateDAO.findByID(certificate.getId())).thenReturn(Optional.of(certificate));
+        when(dao.save(order)).thenReturn(order);
+
+        service.saveOrder(order, user.getId());
+
+        assertEquals(order.getPrice(),certificate.getPrice());
+        assertEquals(order.getUser(),user);
+        assertEquals(order.getCertificate(),certificate);
+    }
     @Test
     void shouldReturnTagById(){
         Order order = new Order();

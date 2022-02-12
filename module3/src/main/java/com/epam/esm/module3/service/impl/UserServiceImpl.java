@@ -1,13 +1,10 @@
 package com.epam.esm.module3.service.impl;
 
-import com.epam.esm.module3.model.dao.CertificateDAO;
-import com.epam.esm.module3.model.dao.OrderDAO;
+
 import com.epam.esm.module3.model.dao.UserDAO;
-import com.epam.esm.module3.model.entity.Certificate;
 import com.epam.esm.module3.model.entity.Order;
 import com.epam.esm.module3.model.entity.User;
 import com.epam.esm.module3.service.UserService;
-import com.epam.esm.module3.service.exception.NoSuchCertificateException;
 import com.epam.esm.module3.service.exception.NoSuchOrderException;
 import com.epam.esm.module3.service.exception.NoSuchUserException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +20,10 @@ import java.util.Optional;
 @Transactional
 public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
-    private final CertificateDAO certificateDAO;
-    private final OrderDAO orderDAO;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, CertificateDAO certificateDAO, OrderDAO orderDAO) {
+    public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
-        this.certificateDAO = certificateDAO;
-        this.orderDAO = orderDAO;
     }
 
     @Override
@@ -58,21 +51,6 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchOrderException();
         }
         return order.get();
-    }
-
-    @Override
-    public Order saveOrder(Order order, Long id){
-        User user = this.getByID(id);
-        Long certificateID = order.getCertificate().getId();
-        Optional<Certificate> certificate = certificateDAO.findByID(certificateID);
-        if(certificate.isEmpty()){
-            throw new NoSuchCertificateException();
-        }
-        order.setUser(user);
-        order.setCertificate(certificate.get());
-        Double price = certificate.get().getPrice();
-        order.setPrice(price);
-        return orderDAO.save(order);
     }
 
     @Override

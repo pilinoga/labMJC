@@ -35,10 +35,6 @@ public class UserServiceImplTest {
     private static final List<User> users = new ArrayList<>();
 
     @Mock
-    private OrderDAOImpl orderDAO = Mockito.mock(OrderDAOImpl.class);
-    @Mock
-    private CertificateDAOImpl certificateDAO = Mockito.mock(CertificateDAOImpl.class);
-    @Mock
     private UserDAOImpl userDAO = Mockito.mock(UserDAOImpl.class);
 
     @InjectMocks
@@ -52,32 +48,6 @@ public class UserServiceImplTest {
         users.add(new User());
         users.add(new User());
     }
-
-
-    @Test
-    void shouldSaveOrder(){
-        User user = new User();
-        user.setId(1L);
-
-        Certificate certificate = new Certificate();
-        certificate.setId(1L);
-        certificate.setPrice(10.5);
-
-        Order order = new Order();
-        order.setId(1L);
-        order.setCertificate(certificate);
-
-        when(userDAO.findByID(user.getId())).thenReturn(Optional.of(user));
-        when(certificateDAO.findByID(certificate.getId())).thenReturn(Optional.of(certificate));
-        when(orderDAO.save(order)).thenReturn(order);
-
-        service.saveOrder(order, user.getId());
-
-        assertEquals(order.getPrice(),certificate.getPrice());
-        assertEquals(order.getUser(),user);
-        assertEquals(order.getCertificate(),certificate);
-    }
-
 
     @Test
     void shouldReturnUserOrderByOrderId(){
