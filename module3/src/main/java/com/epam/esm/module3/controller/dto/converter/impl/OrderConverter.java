@@ -34,6 +34,7 @@ public class OrderConverter implements DtoConverter<Order, OrderDto> {
         dto.setPrice(entity.getPrice());
         dto.setPurchaseDate(entity.getPurchaseDate());
         dto.setCertificateId(entity.getCertificate().getId());
+        dto.setUserId(entity.getUser().getId());
         return dto;
     }
 }

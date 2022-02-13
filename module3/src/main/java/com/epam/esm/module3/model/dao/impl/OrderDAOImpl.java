@@ -62,9 +62,10 @@ public class OrderDAOImpl implements OrderDAO {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> cr = cb.createQuery(Order.class);
         Root<Order> root = cr.from(Order.class);
-        cb.sum(root.get("price"));
         return entityManager.createQuery(
         cr.select(root)
-                .groupBy(root.get("user"))).setMaxResults(1).getSingleResult();
+                .groupBy(root.get("user"))
+                .orderBy(cb.desc(cb.sum(root.get("price")))))
+                .setMaxResults(1).getSingleResult();
     }
 }
