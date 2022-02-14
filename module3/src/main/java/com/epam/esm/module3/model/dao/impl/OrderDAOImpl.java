@@ -4,7 +4,6 @@ import com.epam.esm.module3.model.dao.OrderDAO;
 import com.epam.esm.module3.model.entity.Order;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
 public class OrderDAOImpl implements OrderDAO {
     private static final String ID_COLUMN = "id";
     private static final String FIND_ALL= "select o from Order o ";

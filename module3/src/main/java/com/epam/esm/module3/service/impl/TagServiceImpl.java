@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class TagServiceImpl implements TagService {
     private final TagDAO tagDAO;
     private final OrderDAO orderDAO;

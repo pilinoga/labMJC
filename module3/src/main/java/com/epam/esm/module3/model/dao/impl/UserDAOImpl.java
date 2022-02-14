@@ -4,8 +4,6 @@ import com.epam.esm.module3.model.dao.UserDAO;
 import com.epam.esm.module3.model.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
 public class UserDAOImpl implements UserDAO {
     private static final String ID_COLUMN = "id";
     private static final String FIND_ALL = "select u from User u";

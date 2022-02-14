@@ -4,11 +4,8 @@ import com.epam.esm.module3.model.dao.TagDAO;
 import com.epam.esm.module3.model.entity.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -18,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
 public class TagDAOImpl implements TagDAO {
     private static final String NAME_COLUMN = "name";
     private static final String ID_COLUMN = "id";

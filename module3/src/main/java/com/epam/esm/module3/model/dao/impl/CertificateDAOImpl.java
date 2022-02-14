@@ -6,7 +6,6 @@ import com.epam.esm.module3.model.entity.Tag;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import javax.persistence.EntityManager;
@@ -28,7 +27,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-@Transactional
 public class CertificateDAOImpl implements CertificateDAO {
     private static final String FIND_ALL = "select c from Certificate c";
     private static final String ID_COLUMN = "id";

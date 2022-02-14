@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@Transactional
 public class CertificateServiceImpl implements CertificateService {
     private final CertificateDAO certificateDAO;
     private final TagDAO tagDAO;
@@ -43,6 +42,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
+    @Transactional
     public Certificate save(Certificate certificate) {
         Optional<Certificate> byName = certificateDAO.findByName(certificate);
         if(byName.isPresent()){
@@ -71,6 +71,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
+    @Transactional
     public Certificate update(Certificate certificate, Long id) {
         Optional<Certificate> byID = certificateDAO.findByID(id);
         if(byID.isEmpty()){

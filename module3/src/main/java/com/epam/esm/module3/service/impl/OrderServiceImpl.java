@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class OrderServiceImpl implements OrderService {
     private final OrderDAO orderDAO;
     private final CertificateDAO certificateDAO;
@@ -49,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order saveOrder(Order order, Long id){
         Optional<User> user = userDAO.findByID(id);
         if(user.isEmpty()){
