@@ -14,5 +14,5 @@ public interface TagService extends AbstractService<Tag>{
      *
      * @return most used tag
      */
-    Tag getMostUsedTagFromHighestCostUser();
+    Tag getMostUsedTagFromUserWithHighOrdersCost();
 }

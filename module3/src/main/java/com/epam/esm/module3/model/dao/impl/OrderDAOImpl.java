@@ -2,6 +2,7 @@ package com.epam.esm.module3.model.dao.impl;
 
 import com.epam.esm.module3.model.dao.OrderDAO;
 import com.epam.esm.module3.model.entity.Order;
+import com.epam.esm.module3.model.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
@@ -56,7 +57,7 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order findUserWithHighestOrdersCost(){
+    public User findUserWithHighestOrdersCost(){
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> cr = cb.createQuery(Order.class);
         Root<Order> root = cr.from(Order.class);
@@ -64,6 +65,6 @@ public class OrderDAOImpl implements OrderDAO {
         cr.select(root)
                 .groupBy(root.get("user"))
                 .orderBy(cb.desc(cb.sum(root.get("price")))))
-                .setMaxResults(1).getSingleResult();
+                .setMaxResults(1).getSingleResult().getUser();
     }
 }

@@ -67,8 +67,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag getMostUsedTagFromHighestCostUser(){
-        User user = orderDAO.findUserWithHighestOrdersCost().getUser();
+    public Tag getMostUsedTagFromUserWithHighOrdersCost(){
+        User user = orderDAO.findUserWithHighestOrdersCost();
         List<Tag> tags = new ArrayList<>();
         user.getOrders().stream()
                 .map(o -> o.getCertificate().getTags()).forEach(tags::addAll);

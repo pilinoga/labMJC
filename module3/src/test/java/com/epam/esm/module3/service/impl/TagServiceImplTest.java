@@ -143,8 +143,8 @@ public class TagServiceImplTest {
         Order orderFromBD = new Order();
         orderFromBD.setUser(user);
 
-        when(orderDAO.findUserWithHighestOrdersCost()).thenReturn(orderFromBD);
-        Tag actual = service.getMostUsedTagFromHighestCostUser();
+        when(orderDAO.findUserWithHighestOrdersCost()).thenReturn(orderFromBD.getUser());
+        Tag actual = service.getMostUsedTagFromUserWithHighOrdersCost();
         Tag expected = new Tag(1L,"test");
         assertEquals(expected,actual);
 

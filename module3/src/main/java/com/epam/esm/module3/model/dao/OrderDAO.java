@@ -1,6 +1,7 @@
 package com.epam.esm.module3.model.dao;
 
 import com.epam.esm.module3.model.entity.Order;
+import com.epam.esm.module3.model.entity.User;
 
 /**
  * Interface OrderDAO is designed for basic work with database
@@ -14,5 +15,5 @@ public interface OrderDAO extends DAO<Order>{
      *
      * @return order
      */
-    Order findUserWithHighestOrdersCost();
+    User findUserWithHighestOrdersCost();
 }

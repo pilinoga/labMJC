@@ -89,7 +89,7 @@ public class TagController {
     @GetMapping("/top")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getTopTag() {
-        Tag tag = service.getMostUsedTagFromHighestCostUser();
+        Tag tag = service.getMostUsedTagFromUserWithHighOrdersCost();
         TagDto dto = converter.convert(tag);
         hateoas.addLinks(dto);
         return dto;
