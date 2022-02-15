@@ -3,6 +3,7 @@ package com.epam.esm.module3.controller.exception.handler;
 import com.epam.esm.module3.controller.exception.CertificateValidationException;
 import com.epam.esm.module3.controller.exception.ErrorData;
 import com.epam.esm.module3.controller.exception.OrderValidationException;
+import com.epam.esm.module3.controller.exception.PaginationException;
 import com.epam.esm.module3.controller.exception.TagValidationException;
 import com.epam.esm.module3.controller.localization.Translator;
 import com.epam.esm.module3.service.exception.NoSuchCertificateException;
@@ -127,4 +128,12 @@ public class AppExceptionHandler {
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(IllegalArgumentException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(PaginationException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(PaginationException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    }
 }

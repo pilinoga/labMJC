@@ -28,6 +28,8 @@ public class CertificateServiceImpl implements CertificateService {
     private static final String SORT_PARAMETER = "sort";
     private static final String ASC_SORT = "asc";
     private static final String DESC_SORT = "desc";
+    private static final String SIZE = "size";
+    private static final String PAGE = "page";
 
     @Autowired
     public CertificateServiceImpl(CertificateDAO certificateDAO, TagDAO tagDAO) {
@@ -91,6 +93,14 @@ public class CertificateServiceImpl implements CertificateService {
     public List<Certificate> getByFilter(MultiValueMap<String, String> params) {
         if(params.entrySet().isEmpty()){
             throw new RequestParameterException();
+        }
+        if(params.containsKey(PAGE) &&
+        Integer.parseInt(params.get(PAGE).get(0))<0) {
+            throw new IllegalArgumentException();
+        }
+        if(params.containsKey(SIZE) &&
+                Integer.parseInt(params.get(SIZE).get(0))<1) {
+            throw new IllegalArgumentException();
         }
         if(params.get(NAME_PARAMETER)!=null &&
                 params.get(NAME_PARAMETER).size()!=1){

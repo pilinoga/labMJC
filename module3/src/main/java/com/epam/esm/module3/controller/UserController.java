@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,8 +65,8 @@ public class UserController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getAllUsers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                  @RequestParam(value = "size", defaultValue = "10", required = false) int size){
+    public List<UserDto> getAllUsers(@RequestParam(value = "page", defaultValue = "0", required = false) @Min(0) int page,
+                                  @RequestParam(value = "size", defaultValue = "10", required = false) @Min(1) int size){
         List<User> users = service.getAll(page, size);
         return users.stream()
                 .map(userConverter::convert)

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-    private OrderService service;
+    private final OrderService service;
     private final Hateoas<OrderDto> hateoas;
     private final DtoConverter<Order,OrderDto> converter;
 
@@ -47,8 +48,8 @@ public class OrderController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDto> getAllOrders(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                    @RequestParam(value = "size", defaultValue = "10", required = false) int size){
+    public List<OrderDto> getAllOrders(@RequestParam(value = "page", defaultValue = "0", required = false) @Min(0) int page,
+                                       @RequestParam(value = "size", defaultValue = "10", required = false) @Min(1) int size){
         List<Order> orders = service.getAll(page, size);
         return orders.stream()
                 .map(converter::convert)

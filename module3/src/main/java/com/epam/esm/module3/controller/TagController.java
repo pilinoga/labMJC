@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,8 +55,8 @@ public class TagController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<TagDto> getAllTags(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                @RequestParam(value = "size", defaultValue = "10", required = false) int size){
+    public List<TagDto> getAllTags(@RequestParam(value = "page", defaultValue = "0", required = false) @Min(0) int page,
+                                @RequestParam(value = "size", defaultValue = "10", required = false) @Min(1) int size){
         List<Tag> tags = service.getAll(page, size);
         return tags.stream()
                 .map(converter::convert)
@@ -120,7 +121,6 @@ public class TagController {
      * Method to delete tag by ID.
      *
      * @param id ID of tag
-     * @return HttpStatus NO_CONTENT
      */
 
     @DeleteMapping("/{id}")
