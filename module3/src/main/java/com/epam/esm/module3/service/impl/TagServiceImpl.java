@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public Tag save(Tag tag) {
         Optional<Tag> byName = tagDAO.findByName(tag);
         if(byName.isPresent()){
@@ -45,6 +48,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Tag> byID = tagDAO.findByID(id);
         if(byID.isEmpty()){

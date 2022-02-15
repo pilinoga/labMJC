@@ -53,6 +53,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Certificate> byID = certificateDAO.findByID(id);
         if(byID.isEmpty()){
