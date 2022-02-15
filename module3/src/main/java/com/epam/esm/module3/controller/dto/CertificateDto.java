@@ -4,6 +4,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 import java.util.Set;
 
 public class CertificateDto extends RepresentationModel<CertificateDto> {
@@ -113,15 +114,15 @@ public class CertificateDto extends RepresentationModel<CertificateDto> {
 
         CertificateDto that = (CertificateDto) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (price != null ? !price.equals(that.price) : that.price != null) return false;
-        if (duration != null ? !duration.equals(that.duration) : that.duration != null) return false;
-        if (createDate != null ? !createDate.equals(that.createDate) : that.createDate != null) return false;
-        if (lastUpdateDate != null ? !lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate != null)
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(description, that.description)) return false;
+        if (!Objects.equals(price, that.price)) return false;
+        if (!Objects.equals(duration, that.duration)) return false;
+        if (!Objects.equals(createDate, that.createDate)) return false;
+        if (!Objects.equals(lastUpdateDate, that.lastUpdateDate))
             return false;
-        return tags != null ? tags.equals(that.tags) : that.tags == null;
+        return Objects.equals(tags, that.tags);
     }
 
     @Override
