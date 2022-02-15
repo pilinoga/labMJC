@@ -17,7 +17,7 @@ public abstract class AbstractEntity {
         this.id = id;
     }
 
-    public AbstractEntity() {
+    protected AbstractEntity() {
     }
 
     public Long getId() {

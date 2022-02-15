@@ -1,8 +1,8 @@
 package com.epam.esm.module3.controller.exception;
 
 public class TagValidationException extends RuntimeException{
-    private static final String errorMessage = "tagValidationException";
-    private static final int code = 30001;
+    private static final String ERROR_MESSAGE = "tagValidationException";
+    private static final int CODE = 30001;
 
     public TagValidationException() {
     }
@@ -11,10 +11,10 @@ public class TagValidationException extends RuntimeException{
         super(message);
     }
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

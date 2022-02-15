@@ -1,8 +1,8 @@
 package com.epam.esm.module3.service.exception;
 
 public class UniqueNameCertificateException extends RuntimeException{
-    private static final String errorMessage = "uniqueNameCertificateException";
-    private static final int code = 20001;
+    private static final String ERROR_MESSAGE = "uniqueNameCertificateException";
+    private static final int CODE = 20001;
 
     public UniqueNameCertificateException() {
     }
@@ -12,10 +12,10 @@ public class UniqueNameCertificateException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

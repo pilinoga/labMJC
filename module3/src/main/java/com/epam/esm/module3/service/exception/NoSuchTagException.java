@@ -1,8 +1,8 @@
 package com.epam.esm.module3.service.exception;
 
 public class NoSuchTagException extends RuntimeException{
-    private static final String errorMessage = "noSuchTagException";
-    private static final int code = 20005;
+    private static final String ERROR_MESSAGE = "noSuchTagException";
+    private static final int CODE = 20005;
 
     public NoSuchTagException() {
     }
@@ -12,10 +12,10 @@ public class NoSuchTagException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

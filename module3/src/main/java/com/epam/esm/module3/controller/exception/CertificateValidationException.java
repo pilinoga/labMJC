@@ -1,8 +1,8 @@
 package com.epam.esm.module3.controller.exception;
 
 public class CertificateValidationException extends RuntimeException{
-    private static final String errorMessage = "certificateValidationException";
-    private static final int code = 30002;
+    private static final String ERROR_MESSAGE = "certificateValidationException";
+    private static final int CODE = 30002;
 
     public CertificateValidationException() {
     }
@@ -12,10 +12,10 @@ public class CertificateValidationException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

@@ -1,8 +1,8 @@
 package com.epam.esm.module3.service.exception;
 
 public class SortTypeException extends RuntimeException{
-    private static final String errorMessage = "sortTypeException";
-    private static final int code = 20004;
+    private static final String ERROR_MESSAGE = "sortTypeException";
+    private static final int CODE = 20004;
 
     public SortTypeException() {
     }
@@ -12,10 +12,10 @@ public class SortTypeException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

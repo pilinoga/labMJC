@@ -1,8 +1,8 @@
 package com.epam.esm.module3.service.exception;
 
 public class RequestParameterException extends RuntimeException{
-    private static final String errorMessage = "requestParameterException";
-    private static final int code = 20003;
+    private static final String ERROR_MESSAGE = "requestParameterException";
+    private static final int CODE = 20003;
 
     public RequestParameterException() {
     }
@@ -12,10 +12,10 @@ public class RequestParameterException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

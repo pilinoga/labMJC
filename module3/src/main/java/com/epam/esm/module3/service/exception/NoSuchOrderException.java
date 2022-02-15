@@ -1,8 +1,8 @@
 package com.epam.esm.module3.service.exception;
 
 public class NoSuchOrderException extends RuntimeException{
-    private static final String errorMessage = "noSuchOrderException";
-    private static final int code = 20007;
+    private static final String ERROR_MESSAGE = "noSuchOrderException";
+    private static final int CODE = 20007;
 
     public NoSuchOrderException() {
     }
@@ -12,10 +12,10 @@ public class NoSuchOrderException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

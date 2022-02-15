@@ -1,8 +1,8 @@
 package com.epam.esm.module3.controller.exception;
 
 public class OrderValidationException extends RuntimeException{
-    private static final String errorMessage = "orderValidationException";
-    private static final int code = 30003;
+    private static final String ERROR_MESSAGE = "orderValidationException";
+    private static final int CODE = 30003;
 
     public OrderValidationException() {
     }
@@ -12,10 +12,10 @@ public class OrderValidationException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }

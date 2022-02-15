@@ -1,7 +1,6 @@
 package com.epam.esm.module3.model.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Column;

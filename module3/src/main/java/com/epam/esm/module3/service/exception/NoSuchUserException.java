@@ -1,8 +1,8 @@
 package com.epam.esm.module3.service.exception;
 
 public class NoSuchUserException extends RuntimeException{
-    private static final String errorMessage = "noSuchUserException";
-    private static final int code = 20006;
+    private static final String ERROR_MESSAGE = "noSuchUserException";
+    private static final int CODE = 20006;
 
     public NoSuchUserException() {
     }
@@ -12,10 +12,10 @@ public class NoSuchUserException extends RuntimeException{
     }
 
     public static String getErrorMessage() {
-        return errorMessage;
+        return ERROR_MESSAGE;
     }
 
     public static int getCode() {
-        return code;
+        return CODE;
     }
 }
