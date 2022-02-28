@@ -18,4 +18,12 @@ public interface UserService extends AbstractService<User> {
      * @return order
      */
     Order getUserOrderById(Long userId, Long orderId);
+
+    /**
+     * Method to get user by login
+     *
+     * @param login login for getting user
+     * @return user
+     */
+    User getByLogin(String login);
 }
