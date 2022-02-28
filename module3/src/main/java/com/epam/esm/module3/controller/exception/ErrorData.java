@@ -10,6 +10,11 @@ public class ErrorData {
     public ErrorData() {
     }
 
+    public ErrorData(String errorMessage, int errorCode) {
+        this.errorMessage = errorMessage;
+        this.errorCode = errorCode;
+    }
+
     public String getErrorMessage() {
         return errorMessage;
     }
