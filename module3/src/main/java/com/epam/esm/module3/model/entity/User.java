@@ -6,6 +6,9 @@ import org.hibernate.envers.Audited;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -18,11 +21,22 @@ import java.util.Objects;
 @Audited
 public class User extends AbstractEntity{
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
+    @Column(name = "login")
+    private String login;
+    @Column(name = "password")
+    private String password;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Role> roles = new ArrayList<>();
+
 
     public User(Long id, String name) {
         super(id);
@@ -30,6 +44,30 @@ public class User extends AbstractEntity{
     }
 
     public User() {
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getName() {
