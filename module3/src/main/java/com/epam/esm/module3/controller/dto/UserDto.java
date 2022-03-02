@@ -4,6 +4,7 @@ package com.epam.esm.module3.controller.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -11,9 +12,11 @@ public class UserDto extends RepresentationModel<UserDto> {
     private Long id;
     @Size(min = 2,max = 10)
     private String name;
+    @NotNull
     @Size(min = 2,max = 15)
     private String login;
     @Size(min = 2,max = 15)
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

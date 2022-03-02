@@ -1,9 +1,6 @@
 package com.epam.esm.module3.service.impl;
 
-import com.epam.esm.module3.model.dao.impl.CertificateDAOImpl;
-import com.epam.esm.module3.model.dao.impl.OrderDAOImpl;
 import com.epam.esm.module3.model.dao.impl.UserDAOImpl;
-import com.epam.esm.module3.model.entity.Certificate;
 import com.epam.esm.module3.model.entity.Order;
 import com.epam.esm.module3.model.entity.User;
 import com.epam.esm.module3.service.exception.NoSuchOrderException;
@@ -145,13 +142,6 @@ public class UserServiceImplTest {
     void updateShouldThrow_UnsupportedOperationException(){
         assertThrows(UnsupportedOperationException.class,()->{
             service.update(new User(),1L);
-        });
-    }
-
-    @Test
-    void saveShouldThrow_UnsupportedOperationException(){
-        assertThrows(UnsupportedOperationException.class,()->{
-            service.save(new User());
         });
     }
 
