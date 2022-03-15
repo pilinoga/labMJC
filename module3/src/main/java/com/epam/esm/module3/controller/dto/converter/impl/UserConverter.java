@@ -12,6 +12,8 @@ public class UserConverter implements DtoConverter<User, UserDto> {
         User user = new User();
         user.setId(dto.getId());
         user.setName(dto.getName());
+        user.setLogin(dto.getLogin());
+        user.setPassword(dto.getPassword());
         return user;
     }
 
@@ -20,6 +22,7 @@ public class UserConverter implements DtoConverter<User, UserDto> {
         UserDto dto = new UserDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setLogin(entity.getLogin());
         return dto;
     }
 }

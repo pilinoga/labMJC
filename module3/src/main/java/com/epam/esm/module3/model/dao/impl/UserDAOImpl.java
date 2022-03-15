@@ -40,6 +40,16 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public Optional<User> findByLogin(String login) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> cr = cb.createQuery(User.class);
+        Root<User> root = cr.from(User.class);
+        TypedQuery<User> query = entityManager.createQuery(
+                cr.select(root).where(cb.equal(root.get("login"),login)));
+        return query.getResultStream().findFirst();
+    }
+
+    @Override
     public User save(User user) {
         entityManager.persist(user);
         return user;
@@ -49,5 +59,4 @@ public class UserDAOImpl implements UserDAO {
     public void delete(Long id) {
         throw new UnsupportedOperationException();
     }
-
 }

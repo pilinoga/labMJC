@@ -1,10 +1,12 @@
 package com.epam.esm.module3.controller.exception.handler;
 
+import com.epam.esm.module3.controller.exception.AppException;
 import com.epam.esm.module3.controller.exception.CertificateValidationException;
 import com.epam.esm.module3.controller.exception.ErrorData;
 import com.epam.esm.module3.controller.exception.OrderValidationException;
 import com.epam.esm.module3.controller.exception.PaginationException;
 import com.epam.esm.module3.controller.exception.TagValidationException;
+import com.epam.esm.module3.controller.exception.UserValidationException;
 import com.epam.esm.module3.controller.localization.Translator;
 import com.epam.esm.module3.service.exception.NoSuchCertificateException;
 import com.epam.esm.module3.service.exception.NoSuchOrderException;
@@ -12,6 +14,7 @@ import com.epam.esm.module3.service.exception.NoSuchTagException;
 import com.epam.esm.module3.service.exception.NoSuchUserException;
 import com.epam.esm.module3.service.exception.RequestParameterException;
 import com.epam.esm.module3.service.exception.SortTypeException;
+import com.epam.esm.module3.service.exception.UniqueLoginException;
 import com.epam.esm.module3.service.exception.UniqueNameTagException;
 import com.epam.esm.module3.service.exception.UniqueNameCertificateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,4 +139,32 @@ public class AppExceptionHandler {
         data.setErrorCode(PaginationException.getCode());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(UserValidationException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(UserValidationException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(UserValidationException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(UniqueLoginException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(UniqueLoginException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(UniqueLoginException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(AppException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(AppException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(AppException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

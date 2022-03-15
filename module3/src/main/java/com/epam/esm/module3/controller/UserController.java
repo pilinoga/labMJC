@@ -4,18 +4,22 @@ import com.epam.esm.module3.controller.dto.OrderDto;
 import com.epam.esm.module3.controller.dto.UserDto;
 import com.epam.esm.module3.controller.dto.converter.DtoConverter;
 import com.epam.esm.module3.controller.exception.OrderValidationException;
+import com.epam.esm.module3.controller.exception.UserValidationException;
 import com.epam.esm.module3.controller.hateoas.Hateoas;
+import com.epam.esm.module3.controller.security.jwt.JwtProvider;
 import com.epam.esm.module3.model.entity.Order;
 import com.epam.esm.module3.model.entity.User;
 import com.epam.esm.module3.service.OrderService;
 import com.epam.esm.module3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,6 +43,7 @@ public class UserController {
     private final Hateoas<OrderDto> orderHateoas;
     private final DtoConverter<User,UserDto> userConverter;
     private final DtoConverter<Order,OrderDto> orderConverter;
+    private final JwtProvider provider;
 
     @Autowired
     public UserController(UserService service,
@@ -46,13 +51,14 @@ public class UserController {
                           Hateoas<OrderDto> orderHateoas,
                           DtoConverter<User, UserDto> userConverter,
                           DtoConverter<Order, OrderDto> orderConverter,
-                          OrderService orderService) {
+                          OrderService orderService, JwtProvider provider) {
         this.service = service;
         this.userHateoas = userHateoas;
         this.orderHateoas = orderHateoas;
         this.userConverter = userConverter;
         this.orderConverter = orderConverter;
         this.orderService = orderService;
+        this.provider = provider;
     }
 
     /**
@@ -137,9 +143,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto saveOrder(@Valid @RequestBody OrderDto dto,
                               BindingResult bindingResult,
-                              @PathVariable Long userId) {
+                              @PathVariable Long userId,
+                              @RequestHeader("Authorization") String auth) {
         if(bindingResult.hasErrors()){
             throw new OrderValidationException();
+        }
+        if(!userId.equals(provider.getID(auth))){
+            throw new UserValidationException();
         }
         Order toSave = orderConverter.convert(dto);
         Order order = orderService.saveOrder(toSave, userId);
