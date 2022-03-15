@@ -1,5 +1,6 @@
 package com.epam.esm.module3.controller.exception.handler;
 
+import com.epam.esm.module3.controller.exception.AppException;
 import com.epam.esm.module3.controller.exception.CertificateValidationException;
 import com.epam.esm.module3.controller.exception.ErrorData;
 import com.epam.esm.module3.controller.exception.OrderValidationException;
@@ -156,4 +157,14 @@ public class AppExceptionHandler {
         data.setErrorCode(UniqueLoginException.getCode());
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorData> handleException(AppException exception){
+        ErrorData data = new ErrorData();
+        String message = translator.toLocale(AppException.getErrorMessage());
+        data.setErrorMessage(message);
+        data.setErrorCode(AppException.getCode());
+        return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
