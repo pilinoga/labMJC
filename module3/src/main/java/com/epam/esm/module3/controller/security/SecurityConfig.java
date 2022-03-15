@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String CERTIFICATES_ENDPOINT = "/api/certificates/**";
     public static final String ORDERS_ENDPOINT = "/api/orders/**";
     public static final String USERS_ENDPOINT = "/api/users/**";
-    public static final String TAGS_ENDPOINT = "/api/orders/**";
+    public static final String TAGS_ENDPOINT = "/api/tags/**";
     public static final String AUTH_ENDPOINT = "/api/auth";
     public static final String REGIST_ENDPOINT = "/api/regist";
 
@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET,ORDERS_ENDPOINT).hasAnyRole(USER,ADMIN)
                 .antMatchers(POST,USERS_ENDPOINT).hasRole(USER)
                 //ADMIN endpoints
+                .antMatchers(POST,TAGS_ENDPOINT).hasRole(ADMIN)
                 .antMatchers(DELETE,TAGS_ENDPOINT).hasRole(ADMIN)
                 .antMatchers(GET,USERS_ENDPOINT).hasRole(ADMIN)
                 .antMatchers(PUT,CERTIFICATES_ENDPOINT).hasRole(ADMIN)

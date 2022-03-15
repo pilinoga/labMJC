@@ -37,6 +37,7 @@ public class JwtProvider {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer_";
     private static final String ROLES = "roles";
+    private static final String ID = "ID";
 
     @Autowired
     public JwtProvider(UserDetailsService userDetailsService) {
@@ -57,6 +58,7 @@ public class JwtProvider {
     public String createToken(User user){
         Claims claims = Jwts.claims().setSubject(user.getLogin());
         claims.put(ROLES, getRolesName(user.getRoles()));
+        claims.put("ID",user.getId());
         Date now = new Date();
         Date validity = new Date(now.getTime() + validTime);
         return Jwts.builder()
@@ -87,6 +89,18 @@ public class JwtProvider {
     public String getLogin(String token){
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
+
+    /**
+     * Method for getting ID from token.
+     *
+     * @param token contain id
+     * @return id
+     */
+    public Long getID(String token){
+        return Long.valueOf(Jwts.parser().setSigningKey(secret).parseClaimsJws(token.substring(7))
+                .getBody().get(ID).toString());
+    }
+
 
     /**
      * Method for getting token value from request
